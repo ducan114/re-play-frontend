@@ -1,8 +1,8 @@
+import { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import UserContext from '../contexts/userContext';
 import ProviderPicker from '../components/ProviderPicker';
 import { Container } from '../styles/containers';
-import { useNavigate } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
-import UserContext from '../contexts/userContext';
 
 export default function Login() {
   const { user, authenticating } = useContext(UserContext);

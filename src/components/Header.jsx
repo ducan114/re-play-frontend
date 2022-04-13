@@ -1,13 +1,13 @@
+import { useContext, useState, useRef, useEffect } from 'react';
+import UserContext from '../contexts/userContext';
+import styled from 'styled-components';
+import toast from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Logo } from '../styles/logos';
 import { ProfileImage } from '../styles/images';
 import { SecondaryButton } from '../styles/buttons';
 import { Container } from '../styles/containers';
 import { Link } from 'react-router-dom';
-import UserContext from '../contexts/userContext';
-import { useContext, useState } from 'react';
-import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
-import toast from 'react-hot-toast';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -29,8 +29,13 @@ export default function Header() {
               alt='user-profile-image'
               onClick={() => setShowMenu(!showMenu)}
             />
-            <AnimatePresence>
-              {showMenu && <Menu admin={user.role === 'basic'} />}
+            <AnimatePresence exitBeforeEnter>
+              {showMenu && (
+                <Menu
+                  admin={user.role === 'admin'}
+                  onClose={() => setShowMenu(false)}
+                />
+              )}
             </AnimatePresence>
           </>
         ) : (
@@ -48,8 +53,20 @@ export default function Header() {
   );
 }
 
-function Menu({ admin }) {
+function Menu({ admin, onClose }) {
   const { setUser, setAccessToken } = useContext(UserContext);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const listener = e => {
+      if (menuRef.current.contains(e.target)) return;
+      onClose();
+    };
+    document.addEventListener('click', listener);
+
+    return () => document.removeEventListener('click', listener);
+  }, [menuRef]);
+
   const signOut = async () => {
     try {
       await fetch(`${API_BASE_URL}/signout`, {
@@ -91,6 +108,7 @@ function Menu({ admin }) {
       animate='visible'
       exit='exit'
       variants={dropIn}
+      ref={menuRef}
     >
       <ul>
         <MenuItem>

@@ -1,10 +1,9 @@
 import { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UserContext from '../contexts/userContext';
 import { Container } from '../styles/containers';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardItem } from '../styles/cards';
+import { Card, CardItem, CardContent } from '../styles/cards';
 import { BigProfileImage } from '../styles/images';
-import styled from 'styled-components';
 import { getFullname } from '../helpers';
 
 export default function Profile() {
@@ -17,16 +16,12 @@ export default function Profile() {
 
   return authenticating || !user ? null : (
     <Container as='main' pd='2em 0'>
-      <StyledProfile>
-        <BigProfileImage src={user.profileImage} alt='user-profile-image' />
-        <CardItem>{getFullname(user)}</CardItem>
-      </StyledProfile>
+      <Card>
+        <CardContent flex centered col>
+          <BigProfileImage src={user.profileImage} alt='user-profile-image' />
+          <CardItem>{getFullname(user)}</CardItem>
+        </CardContent>
+      </Card>
     </Container>
   );
 }
-
-const StyledProfile = styled(Card)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;

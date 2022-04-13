@@ -10,11 +10,24 @@ export const Card = styled(motion.div)`
   margin: ${props => props.m};
 `;
 
+export const CardContent = styled.div`
+  display: ${props => props.flex && 'flex'};
+  flex-wrap: wrap;
+  justify-content: ${props => props.centered && 'center'};
+  align-items: ${props => props.centered && 'center'};
+  flex-direction: ${props => props.col && 'column'};
+  margin: ${props => props.m};
+  padding: ${props => props.pd};
+  column-gap: ${props => props.cg};
+  row-gap: ${props => props.rg};
+`;
+
 export const CardTitle = styled.h1`
-  text-align: center;
-  font-size: 2rem;
+  text-align: ${props => props.ta};
+  font-size: ${props => props.fs || '2rem'};
   margin: ${props => props.m};
   color: ${props => props.c};
+  font-weight: 700;
 `;
 
 export const CardItem = styled(motion.div)`

@@ -13,6 +13,12 @@ export const Button = styled(motion.button)`
   border-radius: 5px;
   font-weight: 700;
   font-size: 1rem;
+  gap: ${props => props.gap};
+
+  &[disabled] {
+    filter: grayscale(1);
+    cursor: not-allowed;
+  }
 `;
 
 export const PrimaryButton = styled(Button)`
@@ -33,4 +39,39 @@ export const SuccessButton = styled(Button)`
 export const DangerButton = styled(Button)`
   background-color: var(--colors-danger);
   color: var(--colors-primary);
+`;
+
+export const BlueButton = styled(Button)`
+  background-color: var(--colors-blue);
+  color: var(--colors-primary);
+`;
+
+export const LikeButton = styled(Button)`
+  padding: 0.5em;
+  background-color: transparent;
+  color: ${props =>
+    props.dark ? 'var(--colors-secondary-dark-2)' : 'var(--colors-primary)'};
+
+  span.material-icons {
+    color: ${props => props.liked && 'var(--colors-blue)'};
+  }
+
+  :hover span.material-icons {
+    color: var(--colors-blue);
+  }
+`;
+
+export const DislikeButton = styled(SecondaryButton)`
+  padding: 0.5em;
+  background-color: transparent;
+  color: ${props =>
+    props.dark ? 'var(--colors-secondary-dark-2)' : 'var(--colors-primary)'};
+
+  span.material-icons {
+    color: ${props => props.disliked && 'var(--colors-danger)'};
+  }
+
+  :hover span.material-icons {
+    color: var(--colors-danger);
+  }
 `;

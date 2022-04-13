@@ -35,11 +35,14 @@ export default createGlobalStyle`
   --colors-secondary: #39424e;
   --colors-secondary-dark: #000;
   --colors-secondary-translucent: #0004;
+  --colors-secondary-translucent-dark: #000000b3;
   --colors-success: #1ba94c;
-  --colors-danger: firebrick;
+  --colors-danger: #ff3939;
+  --colors-blue: #1f66ff;
   --shadow-border: 0.1px 1px 4px 0 #e7eeef;
   --shadow-border-medium: 0 4px 12px 0 #00000026;
   --shadow-border-big: 0 6px 16px 0 #00000033;
+  --shadow-border-super-big: 0 0 20px 20px var(--colors-secondary-translucent);
 }
 
 body {

@@ -1,26 +1,28 @@
-import { Card, CardItem, CardTitle } from '../styles/cards';
-import GoogleLogo from '../assets/images/google.png';
 import styled from 'styled-components';
+import { Card, CardItem, CardTitle, CardContent } from '../styles/cards';
+import GoogleLogo from '../assets/images/google.png';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function ProviderPicker() {
   return (
     <ProviderPickerCard>
-      <CardTitle m='0 0 .5em' c='var(--colors-secondary)'>
+      <CardTitle m='0 0 .5em' c='var(--colors-secondary)' ta='center'>
         Choose a provider
       </CardTitle>
-      <Provider
-        pd='.5em'
-        as='a'
-        href={`${API_BASE_URL}/signin/oauth2/google`}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        bb
-      >
-        <ProviderLogo src={GoogleLogo} alt='google-logo' />
-        <span>Google</span>
-      </Provider>
+      <CardContent>
+        <Provider
+          pd='.5em'
+          as='a'
+          href={`${API_BASE_URL}/signin/oauth2/google`}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          bb
+        >
+          <ProviderLogo src={GoogleLogo} alt='google-logo' />
+          <span>Google</span>
+        </Provider>
+      </CardContent>
     </ProviderPickerCard>
   );
 }

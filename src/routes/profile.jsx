@@ -1,20 +1,20 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserContext from '../contexts/userContext';
+import { useAPIContext } from '../contexts/APIContext';
 import { Container } from '../styles/containers';
 import { Card, CardItem, CardContent } from '../styles/cards';
 import { BigProfileImage } from '../styles/images';
 import { getFullname } from '../helpers';
 
 export default function Profile() {
-  const { user, authenticating } = useContext(UserContext);
+  const { user, loadingUser } = useAPIContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authenticating && !user) navigate('/');
-  }, [authenticating, user]);
+    if (!loadingUser && !user) navigate('/');
+  }, [loadingUser, user]);
 
-  return authenticating || !user ? null : (
+  return loadingUser || !user ? null : (
     <Container as='main' pd='2em 0'>
       <Card>
         <CardContent flex centered col>

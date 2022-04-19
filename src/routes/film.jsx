@@ -1,7 +1,7 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useFilmFetch from '../hooks/useFilmFetch';
-import UserContext from '../contexts/userContext';
+import { useAPIContext } from '../contexts/APIContext';
 import styled from 'styled-components';
 import toast from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -14,7 +14,6 @@ import Thumbnail from '../components/Thumbnail';
 import { Container } from '../styles/containers';
 import { Card, CardContent, CardItem, CardTitle } from '../styles/cards';
 import { LikeButton, DislikeButton } from '../styles/buttons';
-import { createEpisode, updateFilm, deleteFilm } from '../API';
 
 export default function Film() {
   const {
@@ -29,16 +28,15 @@ export default function Film() {
     likeFilm,
     dislikeFilm
   } = useFilmFetch();
-  const { user, accessToken, setAccessToken } = useContext(UserContext);
+  const { user, API } = useAPIContext();
   const [showAddEpisode, setShowAddEpisode] = useState(false);
   const [showUpdateFilm, setShowUpdateFilm] = useState(false);
   const navigate = useNavigate();
 
   const handleDeleteFilm = () =>
-    toast.promise(deleteFilm(accessToken, slug), {
+    toast.promise(API.Film.delete(slug), {
       loading: 'Deleting film',
       success: data => {
-        if (data.accessToken) setAccessToken(data.accessToken);
         navigate('/');
         return data.message;
       },
@@ -157,7 +155,6 @@ export default function Film() {
               <EpisodeModal
                 onBackdropClick={() => setShowAddEpisode(false)}
                 onSuccess={() => setNewUpdate(true)}
-                onSubmit={data => createEpisode(accessToken, slug, data)}
                 action='Create'
               />
             )}
@@ -170,7 +167,6 @@ export default function Film() {
                   if (slug) setSlug(slug);
                   setNewUpdate(true);
                 }}
-                onSubmit={data => updateFilm(accessToken, slug, data)}
                 action='Update'
                 film={film}
               />

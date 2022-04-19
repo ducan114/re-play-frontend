@@ -1,44 +1,55 @@
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserContext from '../contexts/userContext';
+import { useAPIContext } from '../contexts/APIContext';
 import FilmModal from '../components/FilmModal';
+import PermissionDenied from '../components/PermissionDenied';
+import Loader from '../components/Loader';
 import styled from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
-import PermissionDenied from '../components/PermissionDenied';
 import { Container } from '../styles/containers';
 import { Card, CardItem, CardContent } from '../styles/cards';
-import { createFilm } from '../API';
 
 export default function Admin() {
-  const { user, authenticating, accessToken } = useContext(UserContext);
+  const {
+    user,
+    loadingUser,
+    API: { Film }
+  } = useAPIContext();
   const [showAddFilm, setShowAddFilm] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authenticating && !user) return navigate('/');
-  }, [authenticating, user]);
+    if (!loadingUser && !user) return navigate('/');
+  }, [loadingUser, user]);
 
-  return !authenticating && user && user.role === 'admin' ? (
-    <Container as='main' pd='2em 0'>
-      <Card pd='2em'>
-        <CardContent>
-          <HCardItem pointer bb onClick={() => setShowAddFilm(true)}>
-            Add film
-          </HCardItem>
-        </CardContent>
-      </Card>
-      <AnimatePresence exitBeforeEnter>
-        {showAddFilm && (
-          <FilmModal
-            onBackdropClick={() => setShowAddFilm(false)}
-            onSubmit={data => createFilm(accessToken, data)}
-            action='Create'
-          />
-        )}
-      </AnimatePresence>
-    </Container>
-  ) : (
+  return !loadingUser && user && user.role !== 'admin' ? (
     <PermissionDenied />
+  ) : (
+    <Container as='main' pd='2em 0'>
+      {loadingUser ? (
+        <Loader />
+      ) : (
+        user && (
+          <>
+            <Card pd='2em'>
+              <CardContent>
+                <HCardItem pointer bb onClick={() => setShowAddFilm(true)}>
+                  Add film
+                </HCardItem>
+              </CardContent>
+            </Card>
+            <AnimatePresence exitBeforeEnter>
+              {showAddFilm && (
+                <FilmModal
+                  onBackdropClick={() => setShowAddFilm(false)}
+                  action='Create'
+                />
+              )}
+            </AnimatePresence>
+          </>
+        )
+      )}
+    </Container>
   );
 }
 

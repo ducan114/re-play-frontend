@@ -1,18 +1,14 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import UserContext from '../contexts/userContext';
+import { useAPIContext } from '../contexts/APIContext';
 import toast from 'react-hot-toast';
-import {
-  fetchEpisode,
-  fetchEpisodeReaction,
-  createEpisodeReaction,
-  updateEpisodeReaction,
-  deleteEpisodeReaction
-} from '../API';
 
 export default function useEpisodeFetch() {
   const params = useParams();
-  const { user, accessToken } = useContext(UserContext);
+  const {
+    user,
+    API: { Episode, EpisodeReaction }
+  } = useAPIContext();
   const [episodeNumber, setEpisodeNumber] = useState(params.episodeNumber);
   const [episode, setEpisode] = useState(undefined);
   const [loading, setLoading] = useState(true);
@@ -23,7 +19,7 @@ export default function useEpisodeFetch() {
   const getEpisode = async () => {
     setLoading(true);
     try {
-      setEpisode(await fetchEpisode(params.slug, episodeNumber));
+      setEpisode(await Episode.findOne(params.slug, episodeNumber));
     } catch (err) {
       if (err.message === 'Episode not found') {
         setEpisode(undefined);
@@ -37,20 +33,19 @@ export default function useEpisodeFetch() {
   };
 
   const reactToEpisode = reaction =>
-    (userReaction
-      ? userReaction === reaction
-        ? deleteEpisodeReaction(accessToken, params.slug, episodeNumber)
-        : updateEpisodeReaction(
-            accessToken,
-            params.slug,
-            episodeNumber,
-            reaction
-          )
-      : createEpisodeReaction(accessToken, params.slug, episodeNumber, reaction)
-    ).then(data => {
-      setUserReaction(data.reaction);
-      setNewUpdate(true);
-    });
+    user
+      ? (userReaction
+          ? userReaction === reaction
+            ? EpisodeReaction.delete(params.slug, episodeNumber)
+            : EpisodeReaction.update(params.slug, episodeNumber, reaction)
+          : EpisodeReaction.create(params.slug, episodeNumber, reaction)
+        ).then(data => {
+          setUserReaction(data.reaction);
+          setNewUpdate(true);
+        })
+      : toast.error(`Please sign in to ${reaction} episode`, {
+          id: 'Require sign in'
+        });
 
   const likeEpisode = () => reactToEpisode('like');
   const dislikeEpisode = () => reactToEpisode('dislike');
@@ -68,17 +63,16 @@ export default function useEpisodeFetch() {
 
   useEffect(() => {
     if (!user) return setUserReaction(undefined);
-    fetchEpisodeReaction(accessToken, params.slug, episodeNumber).then(data =>
+    EpisodeReaction.findOne(params.slug, episodeNumber).then(data =>
       setUserReaction(data.reaction)
     );
   }, [user]);
 
   return {
-    loading,
     episode,
+    loading,
     setNewUpdate,
     slug: params.slug,
-    accessToken,
     episodeNumber,
     setEpisodeNumber,
     userReaction,

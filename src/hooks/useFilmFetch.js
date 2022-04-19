@@ -1,18 +1,14 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import UserContext from '../contexts/userContext';
-import {
-  fetchFilm,
-  createFilmReaction,
-  fetchFilmReaction,
-  updateFilmReaction,
-  deleteFilmReaction
-} from '../API';
+import { useAPIContext } from '../contexts/APIContext';
 import toast from 'react-hot-toast';
 
 export default function useFilmFetch() {
   const params = useParams();
-  const { user, accessToken } = useContext(UserContext);
+  const {
+    user,
+    API: { Film, FilmReaction }
+  } = useAPIContext();
   const [film, setFilm] = useState(undefined);
   const [loading, setLoading] = useState(true);
   const [newUpdate, setNewUpdate] = useState(false);
@@ -24,7 +20,8 @@ export default function useFilmFetch() {
   const getFilm = async () => {
     setLoading(true);
     try {
-      setFilm(await fetchFilm(slug));
+      const film = await Film.findOne(slug);
+      setFilm(film);
     } catch (err) {
       if (err.message === 'Film not found') {
         setFilm(undefined);
@@ -38,15 +35,19 @@ export default function useFilmFetch() {
   };
 
   const reactToFilm = reaction =>
-    (userReaction
-      ? userReaction === reaction
-        ? deleteFilmReaction(accessToken, slug)
-        : updateFilmReaction(accessToken, slug, reaction)
-      : createFilmReaction(accessToken, slug, reaction)
-    ).then(data => {
-      setUserReaction(data.reaction);
-      setNewUpdate(true);
-    });
+    user
+      ? (userReaction
+          ? userReaction === reaction
+            ? FilmReaction.delete(slug)
+            : FilmReaction.update(slug, reaction)
+          : FilmReaction.create(slug, reaction)
+        ).then(data => {
+          setUserReaction(data.reaction);
+          setNewUpdate(true);
+        })
+      : toast.error(`Please sign in to ${reaction} film`, {
+          id: 'Require sign in'
+        });
 
   const likeFilm = () => reactToFilm('like');
 
@@ -62,9 +63,7 @@ export default function useFilmFetch() {
 
   useEffect(() => {
     if (!user) return setUserReaction(undefined);
-    fetchFilmReaction(accessToken, slug).then(data =>
-      setUserReaction(data.reaction)
-    );
+    FilmReaction.findOne(slug).then(data => setUserReaction(data.reaction));
   }, [user]);
 
   return {

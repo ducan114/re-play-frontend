@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import UserContext from '../contexts/userContext';
+import useMountedState from '../hooks/useMountedState';
+import { useAPIContext } from '../contexts/APIContext';
 import toast from 'react-hot-toast';
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -8,17 +9,17 @@ import Modal from './Modal';
 import { Form, FormTitle, FormControl } from '../styles/forms';
 import { PrimaryButton, DangerButton, SuccessButton } from '../styles/buttons';
 import { getVideoSource } from '../helpers';
-import { checkEpisodeNumber } from '../API';
 
 export default function EpisodeModal({
   onBackdropClick,
   onSuccess,
-  onSubmit,
   action,
   episode
 }) {
-  const { accessToken, setAccessToken } = useContext(UserContext);
-  const { slug } = useParams();
+  const {
+    API: { Episode }
+  } = useAPIContext();
+  const params = useParams();
   const [episodeNumber, setEpisodeNumber] = useState(
     (episode && episode.episodeNumber.toString()) || ''
   );
@@ -30,7 +31,7 @@ export default function EpisodeModal({
     (episode && getVideoSource(episode.videoId)) || null
   );
   const [thumbnailLoading, setThumbnailLoading] = useState(true);
-  const [processing, setProcessing] = useState(false);
+  const [processing, setProcessing] = useMountedState(false);
   const [isValidEpisodeNumber, setIsValidEpisodeNumber] = useState(false);
   const [checkingEpisodeNumber, setCheckingEpisodeNumber] = useState(false);
   const newEpisodeForm = useRef(null);
@@ -44,8 +45,8 @@ export default function EpisodeModal({
     const timer = setTimeout(() => {
       setCheckingEpisodeNumber(true);
       toast.promise(
-        checkEpisodeNumber(accessToken, slug, episodeNumber).finally(() =>
-          setCheckingEpisodeNumber(false)
+        Episode.isAvailableEpisodeNumber(params.slug, episodeNumber).finally(
+          () => setCheckingEpisodeNumber(false)
         ),
         {
           loading: 'Checking episode number',
@@ -70,6 +71,7 @@ export default function EpisodeModal({
   }, [video]);
 
   const handleSubmit = e => {
+    if (processing) return;
     e.preventDefault();
     if (!episodeNumber) return toast.error('Episode number is required!');
     if (!video) return toast.error('Video is required!');
@@ -95,7 +97,10 @@ export default function EpisodeModal({
       formData.delete('video');
     setProcessing(true);
     toast.promise(
-      onSubmit(formData).finally(() => setProcessing(false)),
+      (action === 'Create'
+        ? Episode.create(params.slug, formData)
+        : Episode.update(params.slug, params.episodeNumber, formData)
+      ).finally(() => setProcessing(false)),
       {
         loading: `${action === 'Create' ? 'Creating' : 'Updating'} episode`,
         success: data => {
@@ -223,6 +228,7 @@ export default function EpisodeModal({
             onClick={onBackdropClick}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            shadow
           >
             Close
           </DangerButton>
@@ -231,6 +237,7 @@ export default function EpisodeModal({
             whileHover={{ scale: processing ? 1 : 1.05 }}
             whileTap={{ scale: processing ? 1 : 0.95 }}
             disabled={processing}
+            shadow
           >
             {action}
           </SuccessButton>

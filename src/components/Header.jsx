@@ -1,5 +1,5 @@
-import { useContext, useState, useRef, useEffect } from 'react';
-import UserContext from '../contexts/userContext';
+import { useState, useRef, useEffect } from 'react';
+import { useAPIContext } from '../contexts/APIContext';
 import styled from 'styled-components';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,10 +9,8 @@ import { SecondaryButton } from '../styles/buttons';
 import { Container } from '../styles/containers';
 import { Link } from 'react-router-dom';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 export default function Header() {
-  const { user, authenticating } = useContext(UserContext);
+  const { user, loadingUser } = useAPIContext();
   const [showMenu, setShowMenu] = useState(false);
 
   return (
@@ -21,8 +19,7 @@ export default function Header() {
         <Logo as={Link} to='/'>
           RePlay
         </Logo>
-
-        {authenticating ? null : user ? (
+        {loadingUser ? null : user ? (
           <>
             <HeaderProfileImage
               src={user.profileImage}
@@ -54,7 +51,10 @@ export default function Header() {
 }
 
 function Menu({ admin, onClose }) {
-  const { setUser, setAccessToken } = useContext(UserContext);
+  const {
+    setUser,
+    API: { User }
+  } = useAPIContext();
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -63,18 +63,13 @@ function Menu({ admin, onClose }) {
       onClose();
     };
     document.addEventListener('click', listener);
-
     return () => document.removeEventListener('click', listener);
   }, [menuRef]);
 
-  const signOut = async () => {
+  const onSignOut = async () => {
     try {
-      await fetch(`${API_BASE_URL}/signout`, {
-        credentials: 'include'
-      });
-
+      await User.signOut();
       setUser(null);
-      setAccessToken(null);
       toast.success('Signed out!');
     } catch (err) {
       toast.error('Sign out failed.\nPlease check your connections');
@@ -119,7 +114,7 @@ function Menu({ admin, onClose }) {
             <Link to='/admin'>Administration</Link>
           </MenuItem>
         )}
-        <MenuItem onClick={signOut}>Sign out</MenuItem>
+        <MenuItem onClick={onSignOut}>Sign out</MenuItem>
       </ul>
     </StyledMenu>
   );

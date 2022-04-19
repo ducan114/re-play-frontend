@@ -1,5 +1,7 @@
-import { useState, useRef, useContext } from 'react';
-import UserContext from '../contexts/userContext';
+import { useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+import useMountedState from '../hooks/useMountedState';
+import { useAPIContext } from '../contexts/APIContext';
 import Modal from './Modal';
 import styled from 'styled-components';
 import toast from 'react-hot-toast';
@@ -9,23 +11,26 @@ import { PrimaryButton, SuccessButton, DangerButton } from '../styles/buttons';
 
 export default function FilmModal({
   onBackdropClick,
-  onSubmit,
   onSuccess,
   action,
   film
 }) {
-  const { setAccessToken } = useContext(UserContext);
+  const {
+    API: { Film }
+  } = useAPIContext();
+  const { slug } = useParams();
   const [poster, setPoster] = useState((film && film.poster) || null);
   const [title, setTitle] = useState((film && film.title) || '');
   const [description, setDescription] = useState(
     (film && film.description) || ''
   );
   const [posterLoading, setPosterLoading] = useState(true);
-  const [processing, setProcessing] = useState(false);
+  const [processing, setProcessing] = useMountedState(false);
   const newFilmForm = useRef(null);
   const posterInputRef = useRef(null);
 
   const handleSubmit = e => {
+    if (processing) return;
     e.preventDefault();
     if (!title) return toast.error('Title is required!');
     if (!poster) return toast.error('Poster image is required!');
@@ -44,12 +49,14 @@ export default function FilmModal({
     if (film && poster === film.poster) formData.delete('poster');
     setProcessing(true);
     toast.promise(
-      onSubmit(formData).finally(() => setProcessing(false)),
+      (action === 'Create'
+        ? Film.create(formData)
+        : Film.update(slug, formData)
+      ).finally(() => setProcessing(false)),
       {
         loading: `${action === 'Create' ? 'Creating' : 'Updating'} film`,
         success: data => {
           if (onSuccess) onSuccess(data.slug);
-          if (data.accessToken) setAccessToken(data.accessToken);
           return data.message;
         },
         error: `Failed to ${action.toLowerCase()} film\nPlease check your connections`
@@ -130,6 +137,7 @@ export default function FilmModal({
             onClick={onBackdropClick}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            shadow
           >
             Close
           </DangerButton>
@@ -138,6 +146,7 @@ export default function FilmModal({
             whileHover={{ scale: processing ? 1 : 1.05 }}
             whileTap={{ scale: processing ? 1 : 0.95 }}
             disabled={processing}
+            shadow
           >
             {action}
           </SuccessButton>

@@ -58,10 +58,13 @@ export const Form = styled.form`
 `;
 
 export const FormControl = styled.div`
+  position: sticky;
+  bottom: 0;
   grid-column: span 2;
+  justify-self: end;
   display: flex;
   column-gap: 1em;
-  justify-content: flex-end;
+  padding-right: 0.5em;
 `;
 
 export const FormTitle = styled.div`

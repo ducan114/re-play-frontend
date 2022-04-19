@@ -14,6 +14,10 @@ export const Button = styled(motion.button)`
   font-weight: 700;
   font-size: 1rem;
   gap: ${props => props.gap};
+  background-color: var(--btn-background-color);
+  color: var(--btn-color);
+  box-shadow: ${props =>
+    props.shadow && '0 0 3px 0 var(--btn-background-color)'};
 
   &[disabled] {
     filter: grayscale(1);
@@ -22,34 +26,34 @@ export const Button = styled(motion.button)`
 `;
 
 export const PrimaryButton = styled(Button)`
-  background-color: var(--colors-secondary-dark);
-  color: var(--colors-primary);
+  --btn-background-color: var(--colors-secondary-dark);
+  --btn-color: var(--colors-primary);
 `;
 
 export const SecondaryButton = styled(Button)`
-  background-color: var(--colors-primary);
-  color: var(--colors-secondary-dark);
+  --btn-background-color: var(--colors-primary);
+  --btn-color: var(--colors-secondary-dark);
 `;
 
 export const SuccessButton = styled(Button)`
-  background-color: var(--colors-success);
-  color: var(--colors-primary);
+  --btn-background-color: var(--colors-success);
+  --btn-color: var(--colors-primary);
 `;
 
 export const DangerButton = styled(Button)`
-  background-color: var(--colors-danger);
-  color: var(--colors-primary);
+  --btn-background-color: var(--colors-danger);
+  --btn-color: var(--colors-primary);
 `;
 
 export const BlueButton = styled(Button)`
-  background-color: var(--colors-blue);
-  color: var(--colors-primary);
+  --btn-background-color: var(--colors-blue);
+  --btn-color: var(--colors-primary);
 `;
 
 export const LikeButton = styled(Button)`
   padding: 0.5em;
-  background-color: transparent;
-  color: ${props =>
+  --btn-background-color: transparent;
+  --btn-color: ${props =>
     props.dark ? 'var(--colors-secondary-dark-2)' : 'var(--colors-primary)'};
 
   span.material-icons {
@@ -57,14 +61,14 @@ export const LikeButton = styled(Button)`
   }
 
   :hover span.material-icons {
-    color: var(--colors-blue);
+    --btn-color: var(--colors-blue);
   }
 `;
 
 export const DislikeButton = styled(SecondaryButton)`
   padding: 0.5em;
-  background-color: transparent;
-  color: ${props =>
+  --btn-background-color: transparent;
+  --btn-color: ${props =>
     props.dark ? 'var(--colors-secondary-dark-2)' : 'var(--colors-primary)'};
 
   span.material-icons {
@@ -72,6 +76,6 @@ export const DislikeButton = styled(SecondaryButton)`
   }
 
   :hover span.material-icons {
-    color: var(--colors-danger);
+    --btn-color: var(--colors-danger);
   }
 `;

@@ -25,7 +25,7 @@ export default function Home() {
           hidden={imagesLoading > 0}
         />
       ))}
-      {loading || (imagesLoading > 0 && <Loader />)}
+      {(loading || imagesLoading > 0) && <Loader />}
     </Container>
   );
 }

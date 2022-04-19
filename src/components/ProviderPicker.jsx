@@ -42,7 +42,8 @@ const Provider = styled(CardItem)`
   font-size: 1.5rem;
 
   :hover {
-    box-shadow: var(--shadow-border-medium);
+    background-color: var(--colors-primary-dark-2);
+    box-shadow: var(--shadow-border);
   }
 `;
 const ProviderLogo = styled.img`

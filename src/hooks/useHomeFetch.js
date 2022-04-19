@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
+import { useAPIContext } from '../contexts/APIContext';
 import toast from 'react-hot-toast';
-import { fetchFilms } from '../API';
 
 export default function useHomeFetch() {
+  const {
+    API: { Film }
+  } = useAPIContext();
   const [films, setFilms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [imagesLoading, setImagesLoading] = useState(0);
 
   useEffect(() => {
-    fetchFilms()
+    Film.findMany()
       .then(data => {
-        setFilms(data);
-        setImagesLoading(data.length);
+        setFilms(data.films);
+        setImagesLoading(data.films.length);
       })
       .catch(() =>
         toast.error('Fail to load films\nPlease check your connections')

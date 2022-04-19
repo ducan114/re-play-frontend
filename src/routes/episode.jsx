@@ -1,7 +1,7 @@
-import { useState, useRef, useContext } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useEpisodeFetch from '../hooks/useEpisodeFetch';
-import UserContext from '../contexts/userContext';
+import { useAPIContext } from '../contexts/APIContext';
 import styled from 'styled-components';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -13,7 +13,6 @@ import EpisodeActions from '../components/EpisodeActions';
 import { Container } from '../styles/containers';
 import { LikeButton, DislikeButton } from '../styles/buttons';
 import { getVideoSource } from '../helpers';
-import { updateEpisode, deleteEpisode } from '../API';
 
 export default function Episode() {
   const {
@@ -21,14 +20,16 @@ export default function Episode() {
     slug,
     episodeNumber,
     setEpisodeNumber,
-    accessToken,
     episode,
     setNewUpdate,
     userReaction,
     likeEpisode,
     dislikeEpisode
   } = useEpisodeFetch();
-  const { user } = useContext(UserContext);
+  const {
+    user,
+    API: { Episode }
+  } = useAPIContext();
   const [showUpdateEpisode, setShowUpdateEpisode] = useState(false);
   const playerRef = useRef(null);
   const navigate = useNavigate();
@@ -39,15 +40,15 @@ export default function Episode() {
     controls: true,
     responsive: true,
     fluid: true,
-    playbackRates: [0.5, 1, 1.5, 2],
-    poster: episode && episode.thumbnail,
-    sources: [
-      {
-        src: episode && getVideoSource(episode.videoId),
-        type: episode && episode.videoMimeType
-      }
-    ]
+    playbackRates: [0.5, 1, 1.5, 2]
   };
+  const videoPlayerSources = [
+    {
+      src: episode && getVideoSource(episode.videoId),
+      type: episode && episode.videoMimeType
+    }
+  ];
+  const videoPlayerPoster = (episode && episode.thumbnail) || '';
 
   const handlePlayerReady = player => {
     playerRef.current = player;
@@ -55,17 +56,15 @@ export default function Episode() {
     player.on('waiting', () => {
       console.log('player is waiting');
     });
-
     player.on('dispose', () => {
       console.log('player will dispose');
     });
   };
 
   const handleDeleteEpisode = () =>
-    toast.promise(deleteEpisode(accessToken, slug, episodeNumber), {
+    toast.promise(Episode.delete(slug, episodeNumber), {
       loading: 'Deleting episode',
       success: data => {
-        if (data.accessToken) setAccessToken(data.accessToken);
         navigate(`/films/${slug}`);
         return data.message;
       },
@@ -82,6 +81,8 @@ export default function Episode() {
       {episode ? (
         <>
           <VideoPlayer
+            sources={videoPlayerSources}
+            poster={videoPlayerPoster}
             options={videoPlayerOptions}
             onReady={handlePlayerReady}
           />
@@ -148,9 +149,6 @@ export default function Episode() {
                   if (newEpisodeNumber) setEpisodeNumber(newEpisodeNumber);
                   setNewUpdate(true);
                 }}
-                onSubmit={data =>
-                  updateEpisode(accessToken, slug, episodeNumber, data)
-                }
                 action='Update'
                 episode={episode}
               />

@@ -63,9 +63,9 @@ export default function useEpisodeFetch() {
 
   useEffect(() => {
     if (!user) return setUserReaction(undefined);
-    EpisodeReaction.findOne(params.slug, episodeNumber).then(data =>
-      setUserReaction(data.reaction)
-    );
+    EpisodeReaction.findOne(params.slug, episodeNumber)
+      .then(data => setUserReaction(data.reaction))
+      .catch(console.error);
   }, [user]);
 
   return {

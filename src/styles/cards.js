@@ -12,7 +12,7 @@ export const Card = styled(motion.div)`
 
 export const CardContent = styled.div`
   display: ${props => props.flex && 'flex'};
-  flex-wrap: wrap;
+  flex-wrap: ${props => props.fwrap && 'wrap'};
   justify-content: ${props => props.centered && 'center'};
   align-items: ${props => props.centered && 'center'};
   flex-direction: ${props => props.col && 'column'};
@@ -20,6 +20,7 @@ export const CardContent = styled.div`
   padding: ${props => props.pd};
   column-gap: ${props => props.cg};
   row-gap: ${props => props.rg};
+  max-height: ${props => props.mh};
 `;
 
 export const CardTitle = styled.h1`

@@ -131,7 +131,7 @@ export default function FilmModal({
             />
           )}
         </AnimatePresence>
-        <FormControl>
+        <FormControl sticky>
           <DangerButton
             type='button'
             onClick={onBackdropClick}

@@ -15,7 +15,7 @@ export default function useAPI() {
       }
     }
     const data = await resp.json();
-    if (resp.status >= 500) throw new Error(data.message);
+    if (resp.status >= 400) throw new Error(data.message);
     return data;
   };
 

@@ -5,6 +5,7 @@ import { useAPIContext } from '../contexts/APIContext';
 import styled from 'styled-components';
 import toast from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
+import Comments from '../components/Comments';
 import EpisodeModal from '../components/EpisodeModal';
 import FilmModal from '../components/FilmModal';
 import FilmActions from '../components/FilmActions';
@@ -52,7 +53,7 @@ export default function Film() {
     <Container as='main' pd='2em 0'>
       {film ? (
         <>
-          <FCard m='0 0 2em' hidden={thumbnailLoading}>
+          <FCard as='section' m='0 0 2em' hidden={thumbnailLoading}>
             <FCardContent>
               <ThumbContainer>
                 <Thumbnail
@@ -104,36 +105,45 @@ export default function Film() {
                   </div>
                   <LikeButton
                     gap='.5em'
-                    whileHover={scaleUp}
-                    whileTap={scaleDown}
                     title={film.likes}
                     liked={userReaction === 'like'}
                     onClick={likeFilm}
                   >
-                    <span className='material-icons'>thumb_up</span>
+                    <motion.span
+                      whileHover={scaleUp}
+                      whileTap={scaleDown}
+                      className='material-icons'
+                    >
+                      thumb_up
+                    </motion.span>
                     {film.likes}
                   </LikeButton>
                   <DislikeButton
                     gap='.5em'
-                    whileHover={scaleUp}
-                    whileTap={scaleDown}
                     title={film.dislikes}
                     disliked={userReaction === 'dislike'}
                     onClick={dislikeFilm}
                   >
-                    <span className='material-icons'>thumb_down</span>
+                    <motion.span
+                      whileHover={scaleUp}
+                      whileTap={scaleDown}
+                      className='material-icons'
+                    >
+                      thumb_down
+                    </motion.span>
                     {film.dislikes}
                   </DislikeButton>
                 </Detail>
               </Info>
             </FCardContent>
           </FCard>
-          <Card hidden={thumbnailLoading}>
-            <CardTitle fs='1.25rem' m='0 0 .5em'>
+          <Card as='section' hidden={thumbnailLoading} m='0 0 2em'>
+            <CardTitle as='h2' fs='1.25rem' m='0 0 .5em'>
               Episodes
             </CardTitle>
             <CardContent
               flex
+              fwrap
               centered={film.episodes.length === 0}
               cg='.75em'
               rg='.75em'
@@ -150,6 +160,7 @@ export default function Film() {
               ))}
             </CardContent>
           </Card>
+          {!thumbnailLoading && <Comments room={film._id} />}
           <AnimatePresence exitBeforeEnter>
             {showAddEpisode && (
               <EpisodeModal
@@ -222,7 +233,7 @@ const FCardContent = styled(CardContent)`
 
 const FTitle = styled.h1`
   font-size: 1.5rem;
-  font-weight: 400;
+  font-weight: 700;
   margin-bottom: 0.5em;
 `;
 
@@ -241,6 +252,11 @@ const FDescription = styled.p`
   overflow: auto;
   margin-bottom: 0.5em;
   white-space: pre-wrap;
+
+  @media screen and (max-width: 768px) {
+    flex: 1;
+    max-height: 150px;
+  }
 `;
 
 const Episode = styled.div`

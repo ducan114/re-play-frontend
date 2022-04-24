@@ -50,21 +50,21 @@ export const Form = styled.form`
     background-color: var(--colors-primary-dark-1);
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
-
-    :focus {
-      border-width: 2px;
-    }
   }
 `;
 
 export const FormControl = styled.div`
+  ${props =>
+    props.sticky &&
+    `
   position: sticky;
   bottom: 0;
+  padding-right: 0.5em;
+  `}
   grid-column: span 2;
   justify-self: end;
   display: flex;
   column-gap: 1em;
-  padding-right: 0.5em;
 `;
 
 export const FormTitle = styled.div`

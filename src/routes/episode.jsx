@@ -10,8 +10,10 @@ import NotFound from '../components/NotFound';
 import Loader from '../components/Loader';
 import VideoPlayer from '../components/VideoPlayer';
 import EpisodeActions from '../components/EpisodeActions';
+import Comments from '../components/Comments';
 import { Container } from '../styles/containers';
 import { LikeButton, DislikeButton } from '../styles/buttons';
+import { Card, CardContent, CardTitle, CardItem } from '../styles/cards';
 import { getVideoSource } from '../helpers';
 
 export default function Episode() {
@@ -80,67 +82,73 @@ export default function Episode() {
     <Container as='main' pd='2em 0'>
       {episode ? (
         <>
-          <VideoPlayer
-            sources={videoPlayerSources}
-            poster={videoPlayerPoster}
-            options={videoPlayerOptions}
-            onReady={handlePlayerReady}
-          />
-          <EpisodeTitle>
-            Ep {episode.episodeNumber}
-            {episode.title && ` - ${episode.title}`}
-          </EpisodeTitle>
-          <EpisodeInfo>
-            <Views>
-              {episode.views} view{episode.views > 1 && 's'}
-            </Views>
-            <LikeButton
-              dark
-              gap='.5em'
-              whileHover={scaleUp}
-              whileTap={scaleDown}
-              title={episode.likes}
-              liked={userReaction === 'like'}
-              onClick={likeEpisode}
-            >
-              <span className='material-icons'>thumb_up</span>
-              {episode.likes}
-            </LikeButton>
-            <DislikeButton
-              dark
-              gap='.5em'
-              whileHover={scaleUp}
-              whileTap={scaleDown}
-              title={episode.dislikes}
-              disliked={userReaction === 'dislike'}
-              onClick={dislikeEpisode}
-            >
-              <span className='material-icons'>thumb_down</span>
-              {episode.dislikes}
-            </DislikeButton>
-            {user && user.role === 'admin' && (
-              <EpisodeActions>
-                <motion.span
-                  className='material-icons'
+          <Card m='0 0 2em'>
+            <CardContent>
+              <CardItem
+                as={VideoPlayer}
+                sources={videoPlayerSources}
+                poster={videoPlayerPoster}
+                options={videoPlayerOptions}
+                onReady={handlePlayerReady}
+              />
+              <CardItem as={EpisodeTitle} pd='.25em'>
+                Ep {episode.episodeNumber}
+                {episode.title && ` - ${episode.title}`}
+              </CardItem>
+              <CardItem as={EpisodeInfo} pd='.25em'>
+                <Views>
+                  {episode.views} view{episode.views > 1 && 's'}
+                </Views>
+                <LikeButton
+                  dark
+                  gap='.5em'
                   whileHover={scaleUp}
                   whileTap={scaleDown}
-                  title='Update'
-                  onClick={() => setShowUpdateEpisode(true)}
+                  title={episode.likes}
+                  liked={userReaction === 'like'}
+                  onClick={likeEpisode}
                 >
-                  edit
-                </motion.span>
-                <motion.span
-                  className='material-icons'
+                  <span className='material-icons'>thumb_up</span>
+                  {episode.likes}
+                </LikeButton>
+                <DislikeButton
+                  dark
+                  gap='.5em'
                   whileHover={scaleUp}
                   whileTap={scaleDown}
-                  title='Delete'
-                  onClick={handleDeleteEpisode}
+                  title={episode.dislikes}
+                  disliked={userReaction === 'dislike'}
+                  onClick={dislikeEpisode}
                 >
-                  delete
-                </motion.span>
-              </EpisodeActions>
-            )}
-          </EpisodeInfo>
+                  <span className='material-icons'>thumb_down</span>
+                  {episode.dislikes}
+                </DislikeButton>
+                {user && user.role === 'admin' && (
+                  <EpisodeActions>
+                    <motion.span
+                      className='material-icons'
+                      whileHover={scaleUp}
+                      whileTap={scaleDown}
+                      title='Update'
+                      onClick={() => setShowUpdateEpisode(true)}
+                    >
+                      edit
+                    </motion.span>
+                    <motion.span
+                      className='material-icons'
+                      whileHover={scaleUp}
+                      whileTap={scaleDown}
+                      title='Delete'
+                      onClick={handleDeleteEpisode}
+                    >
+                      delete
+                    </motion.span>
+                  </EpisodeActions>
+                )}
+              </CardItem>
+            </CardContent>
+          </Card>
+          {!loading && <Comments room={`${episode.filmId}/${episode._id}`} />}
           <AnimatePresence>
             {showUpdateEpisode && (
               <EpisodeModal
@@ -165,7 +173,6 @@ export default function Episode() {
 const EpisodeTitle = styled.h1`
   font-weight: 400;
   font-size: 1.5rem;
-  margin-bottom: 0.25em;
 `;
 
 const EpisodeInfo = styled.div`

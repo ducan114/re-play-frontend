@@ -222,7 +222,7 @@ export default function EpisodeModal({
             </VideoPriviewer>
           )}
         </AnimatePresence>
-        <FormControl>
+        <FormControl sticky>
           <DangerButton
             type='button'
             onClick={onBackdropClick}

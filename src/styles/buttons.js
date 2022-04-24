@@ -57,7 +57,8 @@ export const LikeButton = styled(Button)`
     props.dark ? 'var(--colors-secondary-dark-2)' : 'var(--colors-primary)'};
 
   span.material-icons {
-    color: ${props => props.liked && 'var(--colors-blue)'};
+    color: var(--btn-color);
+    --btn-color: ${props => props.liked && 'var(--colors-blue)'};
   }
 
   :hover span.material-icons {
@@ -72,7 +73,8 @@ export const DislikeButton = styled(SecondaryButton)`
     props.dark ? 'var(--colors-secondary-dark-2)' : 'var(--colors-primary)'};
 
   span.material-icons {
-    color: ${props => props.disliked && 'var(--colors-danger)'};
+    color: var(--btn-color);
+    --btn-color: ${props => props.disliked && 'var(--colors-danger)'};
   }
 
   :hover span.material-icons {

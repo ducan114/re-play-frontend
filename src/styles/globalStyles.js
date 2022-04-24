@@ -69,4 +69,8 @@ a {
   font-weight: inherit;
   color: inherit;
 }
+
+.force-scroll-behavior-normal {
+  scroll-behavior: auto !important;
+}
 `;

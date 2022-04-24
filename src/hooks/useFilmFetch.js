@@ -63,7 +63,9 @@ export default function useFilmFetch() {
 
   useEffect(() => {
     if (!user) return setUserReaction(undefined);
-    FilmReaction.findOne(slug).then(data => setUserReaction(data.reaction));
+    FilmReaction.findOne(slug)
+      .then(data => setUserReaction(data.reaction))
+      .catch(console.error);
   }, [user]);
 
   return {

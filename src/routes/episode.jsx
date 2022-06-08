@@ -121,7 +121,7 @@ export default function Episode() {
                   title={episode.likes}
                   liked={userReaction === 'like'}
                   onClick={likeEpisode}>
-                  <span className='material-icons'>thumb_up</span>
+                  <span className='material-symbols-outlined'>thumb_up</span>
                   {episode.likes}
                 </LikeButton>
                 <DislikeButton
@@ -132,13 +132,13 @@ export default function Episode() {
                   title={episode.dislikes}
                   disliked={userReaction === 'dislike'}
                   onClick={dislikeEpisode}>
-                  <span className='material-icons'>thumb_down</span>
+                  <span className='material-symbols-outlined'>thumb_down</span>
                   {episode.dislikes}
                 </DislikeButton>
                 {user && user.role === 'admin' && (
                   <EpisodeActions>
                     <motion.span
-                      className='material-icons'
+                      className='material-symbols-outlined'
                       whileHover={scaleUp}
                       whileTap={scaleDown}
                       title='Update'
@@ -146,7 +146,7 @@ export default function Episode() {
                       edit
                     </motion.span>
                     <motion.span
-                      className='material-icons'
+                      className='material-symbols-outlined'
                       whileHover={scaleUp}
                       whileTap={scaleDown}
                       title='Delete'

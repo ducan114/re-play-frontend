@@ -7,11 +7,10 @@ export default function EpisodeActions({ children }) {
   return (
     <Wrapper>
       <motion.span
-        className='material-icons'
+        className='material-symbols-outlined'
         whileHover={{ scale: 1.1 }}
         animate={{ rotate: isOpen ? 45 : 0 }}
-        onClick={() => setIsOpen(prev => !prev)}
-      >
+        onClick={() => setIsOpen(prev => !prev)}>
         settings
       </motion.span>
       <AnimatePresence exitBeforeEnter>
@@ -19,8 +18,7 @@ export default function EpisodeActions({ children }) {
           <motion.div
             initial={{ scale: 0.75, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.75, opacity: 0 }}
-          >
+            exit={{ scale: 0.75, opacity: 0 }}>
             {children}
           </motion.div>
         )}

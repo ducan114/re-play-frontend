@@ -51,6 +51,10 @@ body {
   font-weight: 400;
 }
 
+body.modal-open {
+  overflow-y: hidden;
+}
+
 
 #root {
   min-height: 100vh;

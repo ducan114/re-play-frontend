@@ -4,7 +4,8 @@ import Thumbnail from '../components/Thumbnail';
 import Loader from '../components/Loader';
 
 export default function Home() {
-  const { films, loading, imagesLoading, setImagesLoading } = useFilmsFetch();
+  const { films, loading, imagesLoading, setImagesLoading } =
+    useFilmsFetch('topview');
 
   return (
     <Container

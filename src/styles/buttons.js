@@ -15,7 +15,7 @@ export const Button = styled(motion.button)`
   font-size: 1rem;
   gap: ${props => props.gap};
   background-color: var(--btn-background-color);
-  color: var(--btn-color);
+  color: var(--btn-color, var(--colors-primary));
   box-shadow: ${props =>
     props.shadow && '0 0 3px 0 var(--btn-background-color)'};
 
@@ -56,12 +56,13 @@ export const LikeButton = styled(Button)`
   --btn-color: ${props =>
     props.dark ? 'var(--colors-secondary-dark-2)' : 'var(--colors-primary)'};
 
-  span.material-icons {
+  span.material-symbols-outlined {
     color: var(--btn-color);
     --btn-color: ${props => props.liked && 'var(--colors-blue)'};
+    ${props => props.liked && "font-variation-settings: 'FILL' 1"};
   }
 
-  :hover span.material-icons {
+  :hover span.material-symbols-outlined {
     --btn-color: var(--colors-blue);
   }
 `;
@@ -72,12 +73,13 @@ export const DislikeButton = styled(SecondaryButton)`
   --btn-color: ${props =>
     props.dark ? 'var(--colors-secondary-dark-2)' : 'var(--colors-primary)'};
 
-  span.material-icons {
+  span.material-symbols-outlined {
     color: var(--btn-color);
     --btn-color: ${props => props.disliked && 'var(--colors-danger)'};
+    ${props => props.disliked && "font-variation-settings: 'FILL' 1"};
   }
 
-  :hover span.material-icons {
+  :hover span.material-symbols-outlined {
     --btn-color: var(--colors-danger);
   }
 `;

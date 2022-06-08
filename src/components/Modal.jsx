@@ -1,7 +1,15 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Backdrop, Modal as StyledModal } from '../styles/modals';
 
 export default function Modal({ onBackdropClick, children }) {
+  useEffect(() => {
+    document.body.classList.add('modal-open');
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, []);
+
   return (
     <Backdrop onClick={onBackdropClick}>
       <StyledModal
@@ -15,11 +23,10 @@ export default function Modal({ onBackdropClick, children }) {
             duration: 0.2,
             type: 'spring',
             damping: 25,
-            stiffness: 500
-          }
+            stiffness: 500,
+          },
         }}
-        exit={{ y: '100vh', opacity: 0 }}
-      >
+        exit={{ y: '100vh', opacity: 0 }}>
         {children}
       </StyledModal>
     </Backdrop>

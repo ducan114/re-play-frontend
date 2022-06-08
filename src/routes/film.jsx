@@ -63,7 +63,7 @@ export default function Film() {
                   {user && user.role === 'admin' && (
                     <FilmActions>
                       <motion.span
-                        className='material-icons'
+                        className='material-symbols-outlined'
                         whileHover={scaleUp}
                         whileTap={scaleDown}
                         onClick={() => setShowUpdateFilm(true)}
@@ -71,7 +71,7 @@ export default function Film() {
                         edit
                       </motion.span>
                       <motion.span
-                        className='material-icons'
+                        className='material-symbols-outlined'
                         whileHover={scaleUp}
                         whileTap={scaleDown}
                         onClick={handleDeleteFilm}
@@ -79,7 +79,7 @@ export default function Film() {
                         delete
                       </motion.span>
                       <motion.span
-                        className='material-icons'
+                        className='material-symbols-outlined'
                         whileHover={scaleUp}
                         whileTap={scaleDown}
                         onClick={() => setShowAddEpisode(true)}
@@ -107,7 +107,7 @@ export default function Film() {
                     <motion.span
                       whileHover={scaleUp}
                       whileTap={scaleDown}
-                      className='material-icons'>
+                      className='material-symbols-outlined'>
                       thumb_up
                     </motion.span>
                     {film.likes}
@@ -120,7 +120,7 @@ export default function Film() {
                     <motion.span
                       whileHover={scaleUp}
                       whileTap={scaleDown}
-                      className='material-icons'>
+                      className='material-symbols-outlined'>
                       thumb_down
                     </motion.span>
                     {film.dislikes}

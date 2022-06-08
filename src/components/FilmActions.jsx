@@ -8,11 +8,10 @@ export default function FilmActions({ children }) {
   return (
     <Wrapper title='Actions'>
       <motion.span
-        className='material-icons'
+        className='material-symbols-outlined'
         whileHover={{ scale: 1.1 }}
         animate={{ rotate: isOpen ? 45 : 0 }}
-        onClick={() => setIsOpen(prev => !prev)}
-      >
+        onClick={() => setIsOpen(prev => !prev)}>
         settings
       </motion.span>
       <AnimatePresence exitBeforeEnter>
@@ -20,8 +19,7 @@ export default function FilmActions({ children }) {
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-          >
+            exit={{ height: 0, opacity: 0 }}>
             {children}
           </motion.div>
         )}

@@ -2,16 +2,16 @@ import { useState, useEffect } from 'react';
 import { useAPIContext } from '../contexts/APIContext';
 import toast from 'react-hot-toast';
 
-export default function useHomeFetch() {
+export default function useFilmsFetch(mode) {
   const {
-    API: { Film }
+    API: { Film },
   } = useAPIContext();
   const [films, setFilms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [imagesLoading, setImagesLoading] = useState(0);
 
   useEffect(() => {
-    Film.findMany()
+    Film.findMany(mode)
       .then(data => {
         setFilms(data.films);
         setImagesLoading(data.films.length);

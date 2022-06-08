@@ -7,7 +7,7 @@ export default function useEpisodeFetch() {
   const params = useParams();
   const {
     user,
-    API: { Episode, EpisodeReaction }
+    API: { Episode, EpisodeReaction },
   } = useAPIContext();
   const [episodeNumber, setEpisodeNumber] = useState(params.episodeNumber);
   const [episode, setEpisode] = useState(undefined);
@@ -17,7 +17,6 @@ export default function useEpisodeFetch() {
   const navigate = useNavigate();
 
   const getEpisode = async () => {
-    setLoading(true);
     try {
       setEpisode(await Episode.findOne(params.slug, episodeNumber));
     } catch (err) {
@@ -44,7 +43,7 @@ export default function useEpisodeFetch() {
           setNewUpdate(true);
         })
       : toast.error(`Please sign in to ${reaction} episode`, {
-          id: 'Require sign in'
+          id: 'Require sign in',
         });
 
   const likeEpisode = () => reactToEpisode('like');
@@ -53,7 +52,9 @@ export default function useEpisodeFetch() {
   useEffect(getEpisode, [episodeNumber]);
 
   useEffect(() => {
-    if (newUpdate) getEpisode().finally(() => setNewUpdate(false));
+    if (!newUpdate) return;
+    setNewUpdate(false);
+    getEpisode();
   }, [newUpdate]);
 
   useEffect(
@@ -77,6 +78,6 @@ export default function useEpisodeFetch() {
     setEpisodeNumber,
     userReaction,
     likeEpisode,
-    dislikeEpisode
+    dislikeEpisode,
   };
 }

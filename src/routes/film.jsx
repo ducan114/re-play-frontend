@@ -27,7 +27,7 @@ export default function Film() {
     setNewUpdate,
     userReaction,
     likeFilm,
-    dislikeFilm
+    dislikeFilm,
   } = useFilmFetch();
   const { user, API } = useAPIContext();
   const [showAddEpisode, setShowAddEpisode] = useState(false);
@@ -41,7 +41,7 @@ export default function Film() {
         navigate('/');
         return data.message;
       },
-      error: 'Failed to delete film\nPlease check your connections'
+      error: 'Failed to delete film\nPlease check your connections',
     });
 
   const scaleUp = { scale: 1.05 };
@@ -59,8 +59,7 @@ export default function Film() {
                 <Thumbnail
                   img={film.poster}
                   onLoaded={() => setThumbnailLoading(false)}
-                  hidden={thumbnailLoading}
-                >
+                  hidden={thumbnailLoading}>
                   {user && user.role === 'admin' && (
                     <FilmActions>
                       <motion.span
@@ -68,8 +67,7 @@ export default function Film() {
                         whileHover={scaleUp}
                         whileTap={scaleDown}
                         onClick={() => setShowUpdateFilm(true)}
-                        title='Update'
-                      >
+                        title='Update'>
                         edit
                       </motion.span>
                       <motion.span
@@ -77,8 +75,7 @@ export default function Film() {
                         whileHover={scaleUp}
                         whileTap={scaleDown}
                         onClick={handleDeleteFilm}
-                        title='Delete'
-                      >
+                        title='Delete'>
                         delete
                       </motion.span>
                       <motion.span
@@ -86,8 +83,7 @@ export default function Film() {
                         whileHover={scaleUp}
                         whileTap={scaleDown}
                         onClick={() => setShowAddEpisode(true)}
-                        title='New episode'
-                      >
+                        title='New episode'>
                         add
                       </motion.span>
                     </FilmActions>
@@ -107,13 +103,11 @@ export default function Film() {
                     gap='.5em'
                     title={film.likes}
                     liked={userReaction === 'like'}
-                    onClick={likeFilm}
-                  >
+                    onClick={likeFilm}>
                     <motion.span
                       whileHover={scaleUp}
                       whileTap={scaleDown}
-                      className='material-icons'
-                    >
+                      className='material-icons'>
                       thumb_up
                     </motion.span>
                     {film.likes}
@@ -122,13 +116,11 @@ export default function Film() {
                     gap='.5em'
                     title={film.dislikes}
                     disliked={userReaction === 'dislike'}
-                    onClick={dislikeFilm}
-                  >
+                    onClick={dislikeFilm}>
                     <motion.span
                       whileHover={scaleUp}
                       whileTap={scaleDown}
-                      className='material-icons'
-                    >
+                      className='material-icons'>
                       thumb_down
                     </motion.span>
                     {film.dislikes}
@@ -146,15 +138,13 @@ export default function Film() {
               fwrap
               centered={film.episodes.length === 0}
               cg='.75em'
-              rg='.75em'
-            >
+              rg='.75em'>
               {film.episodes.length === 0 && 'This film has no episode yet'}
               {film.episodes.map(ep => (
                 <Episode
                   as={Link}
                   to={`/films/${slug}/${ep.episodeNumber}`}
-                  key={ep.episodeNumber}
-                >
+                  key={ep.episodeNumber}>
                   {ep.episodeNumber}
                 </Episode>
               ))}
@@ -253,6 +243,15 @@ const FDescription = styled.p`
   margin-bottom: 0.5em;
   white-space: pre-wrap;
 
+  &::-webkit-scrollbar-track {
+    background-color: var(--colors-secondary-translucent);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0;
+    background-color: var(--colors-primary-dark-2);
+  }
+
   @media screen and (max-width: 768px) {
     flex: 1;
     max-height: 150px;
@@ -264,7 +263,7 @@ const Episode = styled.div`
   padding: 0.25em 0.5em;
   display: flex;
   justify-content: center;
-  align-item: center;
+  align-items: center;
   border-radius: 5px;
   background-color: var(--colors-primary-dark-2);
   box-shadow: var(--shadow-border);

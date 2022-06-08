@@ -8,17 +8,34 @@ import { ProfileImage } from '../styles/images';
 import { SecondaryButton } from '../styles/buttons';
 import { Container } from '../styles/containers';
 import { Link } from 'react-router-dom';
+import { useLocation, matchPath } from 'react-router-dom';
 
 export default function Header() {
   const { user, loadingUser } = useAPIContext();
   const [showMenu, setShowMenu] = useState(false);
+  const location = useLocation();
 
   return (
     <StyledHeader>
       <Container flex>
-        <Logo as={Link} to='/'>
-          RePlay
-        </Logo>
+        <Nav>
+          <NavList>
+            <NavItem>
+              <Logo>
+                <Link to='/'>RePlay</Link>
+              </Logo>
+            </NavItem>
+            <NavItem active={!!matchPath(location.pathname, '/')}>
+              <Link to='/'>New</Link>
+            </NavItem>
+            <NavItem active={!!matchPath(location.pathname, '/topview')}>
+              <Link to='/topview'>Top View</Link>
+            </NavItem>
+            <NavItem active={!!matchPath(location.pathname, '/toplike')}>
+              <Link to='/toplike'>Top Like</Link>
+            </NavItem>
+          </NavList>
+        </Nav>
         {loadingUser ? null : user ? (
           <>
             <HeaderProfileImage
@@ -39,8 +56,7 @@ export default function Header() {
           <Link to='/login'>
             <SecondaryButton
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+              whileTap={{ scale: 0.95 }}>
               Sign In
             </SecondaryButton>
           </Link>
@@ -53,7 +69,7 @@ export default function Header() {
 function Menu({ admin, onClose }) {
   const {
     setUser,
-    API: { User }
+    API: { User },
   } = useAPIContext();
   const menuRef = useRef(null);
 
@@ -79,22 +95,22 @@ function Menu({ admin, onClose }) {
   const dropIn = {
     hidden: {
       scale: 0.75,
-      opacity: 0
+      opacity: 0,
     },
     visible: {
       scale: 1,
       opacity: 1,
       transition: {
-        duration: 0.1
-      }
+        duration: 0.1,
+      },
     },
     exit: {
       scale: 0.75,
       opacity: 0,
       transition: {
-        duration: 0.1
-      }
-    }
+        duration: 0.1,
+      },
+    },
   };
 
   return (
@@ -103,8 +119,7 @@ function Menu({ admin, onClose }) {
       animate='visible'
       exit='exit'
       variants={dropIn}
-      ref={menuRef}
-    >
+      ref={menuRef}>
       <ul>
         <MenuItem>
           <Link to='/profile'>Profile</Link>
@@ -163,4 +178,31 @@ const MenuItem = styled.li`
     color: var(--colors-secondary-dark);
     font-weight: 700;
   }
+`;
+
+const Nav = styled.nav`
+  margin-right: auto;
+`;
+
+const NavList = styled.ul`
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  column-gap: 1em;
+`;
+
+const NavItem = styled.li`
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  color: var(--colors-primary-dark-2);
+
+  :hover {
+    color: var(--colors-primary);
+  }
+
+  ${props =>
+    props.active && 'border-bottom: 3px solid var(--colors-primary-dark-1);'}
+  ${props => props.active && 'color: var(--colors-primary);'}
 `;

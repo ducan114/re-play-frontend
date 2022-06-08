@@ -7,7 +7,7 @@ export default function useFilmFetch() {
   const params = useParams();
   const {
     user,
-    API: { Film, FilmReaction }
+    API: { Film, FilmReaction },
   } = useAPIContext();
   const [film, setFilm] = useState(undefined);
   const [loading, setLoading] = useState(true);
@@ -18,7 +18,6 @@ export default function useFilmFetch() {
   const navigate = useNavigate();
 
   const getFilm = async () => {
-    setLoading(true);
     try {
       const film = await Film.findOne(slug);
       setFilm(film);
@@ -46,7 +45,7 @@ export default function useFilmFetch() {
           setNewUpdate(true);
         })
       : toast.error(`Please sign in to ${reaction} film`, {
-          id: 'Require sign in'
+          id: 'Require sign in',
         });
 
   const likeFilm = () => reactToFilm('like');
@@ -56,7 +55,9 @@ export default function useFilmFetch() {
   useEffect(getFilm, [slug]);
 
   useEffect(() => {
-    if (newUpdate) getFilm().finally(() => setNewUpdate(false));
+    if (!newUpdate) return;
+    setNewUpdate(false);
+    getFilm();
   }, [newUpdate]);
 
   useEffect(() => navigate(`/films/${slug}`), [slug]);
@@ -78,6 +79,6 @@ export default function useFilmFetch() {
     setNewUpdate,
     userReaction,
     likeFilm,
-    dislikeFilm
+    dislikeFilm,
   };
 }

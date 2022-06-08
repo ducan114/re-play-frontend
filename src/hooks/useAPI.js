@@ -53,33 +53,34 @@ export default function useAPI() {
     User: {
       getInfo: getUserInfo,
       refreshToken: User.refreshToken,
-      signOut: User.signOut
+      signOut: User.signOut,
     },
     Film: {
       findOne: Film.findOne,
       findMany: Film.findMany,
       create: createFilm,
       update: updateFilm,
-      delete: deleteFilm
+      delete: deleteFilm,
     },
     Episode: {
       findOne: Episode.findOne,
       create: createEpisode,
       update: updateEpisode,
       delete: deleteEpisode,
-      isAvailableEpisodeNumber
+      isAvailableEpisodeNumber,
+      updateViews: Episode.updateViews,
     },
     FilmReaction: {
       findOne: fetchFilmReaction,
       create: createFilmReaction,
       update: updateFilmReaction,
-      delete: deleteFilmReaction
+      delete: deleteFilmReaction,
     },
     EpisodeReaction: {
       findOne: fetchEpisodeReaction,
       create: createEpisodeReaction,
       update: updateEpisodeReaction,
-      delete: deleteEpisodeReaction
-    }
+      delete: deleteEpisodeReaction,
+    },
   };
 }

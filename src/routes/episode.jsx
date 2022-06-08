@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useEpisodeFetch from '../hooks/useEpisodeFetch';
 import { useAPIContext } from '../contexts/APIContext';
@@ -13,8 +13,8 @@ import EpisodeActions from '../components/EpisodeActions';
 import Comments from '../components/Comments';
 import { Container } from '../styles/containers';
 import { LikeButton, DislikeButton } from '../styles/buttons';
-import { Card, CardContent, CardTitle, CardItem } from '../styles/cards';
-import { getVideoSource } from '../helpers';
+import { Card, CardContent, CardItem } from '../styles/cards';
+import { getVideoSource, toViewsString } from '../helpers';
 
 export default function Episode() {
   const {
@@ -26,15 +26,18 @@ export default function Episode() {
     setNewUpdate,
     userReaction,
     likeEpisode,
-    dislikeEpisode
+    dislikeEpisode,
   } = useEpisodeFetch();
   const {
     user,
-    API: { Episode }
+    API: { Episode },
   } = useAPIContext();
   const [showUpdateEpisode, setShowUpdateEpisode] = useState(false);
   const playerRef = useRef(null);
+  const userId = useRef();
   const navigate = useNavigate();
+
+  useEffect(() => (userId.current = user ? user._id : undefined), [user]);
 
   const videoPlayerOptions = {
     preload: 'metadata',
@@ -42,24 +45,35 @@ export default function Episode() {
     controls: true,
     responsive: true,
     fluid: true,
-    playbackRates: [0.5, 1, 1.5, 2]
+    playbackRates: [0.5, 1, 1.5, 2],
   };
   const videoPlayerSources = [
     {
       src: episode && getVideoSource(episode.videoId),
-      type: episode && episode.videoMimeType
-    }
+      type: episode && episode.videoMimeType,
+    },
   ];
   const videoPlayerPoster = (episode && episode.thumbnail) || '';
 
   const handlePlayerReady = player => {
     playerRef.current = player;
     // you can handle player events here
-    player.on('waiting', () => {
-      console.log('player is waiting');
+    let lastTime;
+    let playedTime = 0;
+    let waiting = false;
+    player.on('timeupdate', () => {
+      if (lastTime === undefined) return (lastTime = Date.now());
+      const currentTime = Date.now();
+      if (!waiting) playedTime += currentTime - lastTime;
+      lastTime = currentTime;
+      if (playedTime / 1000 >= player.duration() * 0.3)
+        player.trigger('update-views');
     });
-    player.on('dispose', () => {
-      console.log('player will dispose');
+    player.on('waiting', () => (waiting = true));
+    player.on('playing', () => (waiting = false));
+    player.any('update-views', async () => {
+      await Episode.updateViews(slug, episodeNumber, userId.current);
+      setNewUpdate(true);
     });
   };
 
@@ -70,7 +84,7 @@ export default function Episode() {
         navigate(`/films/${slug}`);
         return data.message;
       },
-      error: 'Failed to delete film\nPlease check your connections'
+      error: 'Failed to delete film\nPlease check your connections',
     });
 
   const scaleUp = { scale: 1.05 };
@@ -97,7 +111,7 @@ export default function Episode() {
               </CardItem>
               <CardItem as={EpisodeInfo} pd='.25em'>
                 <Views>
-                  {episode.views} view{episode.views > 1 && 's'}
+                  {toViewsString(episode.views)} view{episode.views > 1 && 's'}
                 </Views>
                 <LikeButton
                   dark
@@ -106,8 +120,7 @@ export default function Episode() {
                   whileTap={scaleDown}
                   title={episode.likes}
                   liked={userReaction === 'like'}
-                  onClick={likeEpisode}
-                >
+                  onClick={likeEpisode}>
                   <span className='material-icons'>thumb_up</span>
                   {episode.likes}
                 </LikeButton>
@@ -118,8 +131,7 @@ export default function Episode() {
                   whileTap={scaleDown}
                   title={episode.dislikes}
                   disliked={userReaction === 'dislike'}
-                  onClick={dislikeEpisode}
-                >
+                  onClick={dislikeEpisode}>
                   <span className='material-icons'>thumb_down</span>
                   {episode.dislikes}
                 </DislikeButton>
@@ -130,8 +142,7 @@ export default function Episode() {
                       whileHover={scaleUp}
                       whileTap={scaleDown}
                       title='Update'
-                      onClick={() => setShowUpdateEpisode(true)}
-                    >
+                      onClick={() => setShowUpdateEpisode(true)}>
                       edit
                     </motion.span>
                     <motion.span
@@ -139,8 +150,7 @@ export default function Episode() {
                       whileHover={scaleUp}
                       whileTap={scaleDown}
                       title='Delete'
-                      onClick={handleDeleteEpisode}
-                    >
+                      onClick={handleDeleteEpisode}>
                       delete
                     </motion.span>
                   </EpisodeActions>

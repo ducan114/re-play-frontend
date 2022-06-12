@@ -17,12 +17,20 @@ const getUserInfo = accessToken =>
     },
   });
 
-const fetchFilms = (mode, searchTerm = '', page = 1) =>
+const fetchFilms = (mode, searchTerm = '') =>
   (mode === 'topview'
-    ? fetch(`${API_BASE_URL}/films/topview`)
+    ? fetch(
+        `${API_BASE_URL}/films/topview${
+          searchTerm && `?searchTerm=${searchTerm}`
+        }`
+      )
     : mode === 'toplike'
-    ? fetch(`${API_BASE_URL}/films/toplike`)
-    : fetch(`${API_BASE_URL}/films?searchTerm=${searchTerm}&page=${page}`)
+    ? fetch(
+        `${API_BASE_URL}/films/toplike${
+          searchTerm && `?searchTerm=${searchTerm}`
+        }`
+      )
+    : fetch(`${API_BASE_URL}/films${searchTerm && `?searchTerm=${searchTerm}`}`)
   ).then(res => res.json());
 
 const createFilm = (accessToken, data) =>

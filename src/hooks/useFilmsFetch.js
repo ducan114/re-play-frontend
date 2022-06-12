@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 import { useAPIContext } from '../contexts/APIContext';
 import toast from 'react-hot-toast';
 
-export default function useFilmsFetch(mode) {
+export default function useFilmsFetch({
+  mode = 'search',
+  searchTerm = '',
+} = {}) {
   const {
     API: { Film },
   } = useAPIContext();
@@ -11,7 +14,9 @@ export default function useFilmsFetch(mode) {
   const [imagesLoading, setImagesLoading] = useState(0);
 
   useEffect(() => {
-    Film.findMany(mode)
+    setFilms([]);
+    setLoading(true);
+    Film.findMany(mode, searchTerm)
       .then(data => {
         setFilms(data.films);
         setImagesLoading(data.films.length);
@@ -20,7 +25,7 @@ export default function useFilmsFetch(mode) {
         toast.error('Fail to load films\nPlease check your connections')
       )
       .finally(() => setLoading(false));
-  }, []);
+  }, [searchTerm]);
 
   return { films, loading, imagesLoading, setImagesLoading };
 }

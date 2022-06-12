@@ -15,10 +15,15 @@ export default function SearchBar({ setSearchTerm }) {
   // Debounce user's search string typing to reduce API calls.
   useEffect(() => {
     const timer = setTimeout(() => {
+      console.log(searchParams);
       setSearchTerm(searchString);
-      setSearchParams(
-        searchString ? { ...searchParams, q: searchString } : searchParams
-      );
+      if (!searchString) {
+        searchParams.delete('q');
+        setSearchParams(searchParams);
+      } else {
+        searchParams.set('q', searchString);
+        setSearchParams(searchParams);
+      }
     }, DEBOUNCE_TIMEOUT);
     return () => clearTimeout(timer);
   }, [searchString]);

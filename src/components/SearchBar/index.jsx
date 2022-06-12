@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Wrapper, SearchBox } from './SearchBar.styles';
 import { Container } from '../../styles/containers';
 
@@ -6,12 +7,19 @@ const DEBOUNCE_TIMEOUT = 300; // milliseconds.
 
 export default function SearchBar({ setSearchTerm }) {
   const [searchString, setSearchString] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    setSearchString(searchParams.get('q') || '');
+  }, []);
   // Debounce user's search string typing to reduce API calls.
   useEffect(() => {
-    const timer = setTimeout(
-      () => setSearchTerm(searchString),
-      DEBOUNCE_TIMEOUT
-    );
+    const timer = setTimeout(() => {
+      setSearchTerm(searchString);
+      setSearchParams(
+        searchString ? { ...searchParams, q: searchString } : searchParams
+      );
+    }, DEBOUNCE_TIMEOUT);
     return () => clearTimeout(timer);
   }, [searchString]);
 

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Container } from '../styles/containers';
-import { PrimaryButton } from '../styles/buttons';
+import { Container } from '../../styles/containers';
+import { PrimaryButton } from '../../styles/buttons';
 
 export default function NotFound() {
   return (

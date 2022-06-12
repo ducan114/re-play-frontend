@@ -54,7 +54,7 @@ export const LikeButton = styled(Button)`
   padding: 0.5em;
   --btn-background-color: transparent;
   --btn-color: ${props =>
-    props.dark ? 'var(--colors-secondary-dark-2)' : 'var(--colors-primary)'};
+    props.dark ? 'var(--colors-secondary-dark)' : 'var(--colors-primary)'};
 
   span.material-symbols-outlined {
     color: var(--btn-color);
@@ -71,7 +71,7 @@ export const DislikeButton = styled(SecondaryButton)`
   padding: 0.5em;
   --btn-background-color: transparent;
   --btn-color: ${props =>
-    props.dark ? 'var(--colors-secondary-dark-2)' : 'var(--colors-primary)'};
+    props.dark ? 'var(--colors-secondary-dark)' : 'var(--colors-primary)'};
 
   span.material-symbols-outlined {
     color: var(--btn-color);

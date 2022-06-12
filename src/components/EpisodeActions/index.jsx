@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Wrapper } from './EpisodeActions.styles';
 
-export default function FilmActions({ children }) {
+export default function EpisodeActions({ children }) {
   const [isOpen, setIsOpen] = useState(false);
-
   return (
-    <Wrapper title='Actions'>
+    <Wrapper>
       <motion.span
         className='material-symbols-outlined'
         whileHover={{ scale: 1.1 }}
@@ -17,9 +16,9 @@ export default function FilmActions({ children }) {
       <AnimatePresence exitBeforeEnter>
         {isOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}>
+            initial={{ scale: 0.75, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.75, opacity: 0 }}>
             {children}
           </motion.div>
         )}
@@ -27,19 +26,3 @@ export default function FilmActions({ children }) {
     </Wrapper>
   );
 }
-
-const Wrapper = styled.div`
-  position: absolute;
-  top: 0.5em;
-  left: 0.5em;
-  cursor: pointer;
-
-  div {
-    position: absolute;
-    top: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    row-gap: 0.5em;
-  }
-`;

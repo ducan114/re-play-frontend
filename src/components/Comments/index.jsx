@@ -1,14 +1,22 @@
 import { useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import useSocket from '../hooks/useSocket';
-import { useAPIContext } from '../contexts/APIContext';
-import { Card, CardTitle, CardContent, CardItem } from '../styles/cards';
-import { Form, FormControl } from '../styles/forms';
-import { BlueButton } from '../styles/buttons';
-import { ProfileImage } from '../styles/images';
-import styled from 'styled-components';
+import useSocket from '../../hooks/useSocket';
+import { useAPIContext } from '../../contexts/APIContext';
+import { Card, CardTitle, CardContent } from '../../styles/cards';
+import { FormControl } from '../../styles/forms';
+import { BlueButton } from '../../styles/buttons';
+import { ProfileImage } from '../../styles/images';
+import {
+  CommentList,
+  CommentForm,
+  Comment,
+  CommentContent,
+  CommentText,
+  CommentCreatedAt,
+  Username,
+  SignInToComment,
+} from './Comments.styles';
 import toast from 'react-hot-toast';
-import { getFullname } from '../helpers';
+import { getFullname } from '../../helpers';
 
 export default function Comments({ room }) {
   const socket = useSocket();
@@ -35,7 +43,7 @@ export default function Comments({ room }) {
     );
     socket.on('error', err =>
       toast.error(err.message, {
-        id: 'socket error'
+        id: 'socket error',
       })
     );
 
@@ -56,7 +64,7 @@ export default function Comments({ room }) {
     const { _id, profileImage, firstName, middleName, lastName } = user;
     socket.emit('send-comment', {
       content: comment.trim(),
-      author: { _id, profileImage, firstName, middleName, lastName }
+      author: { _id, profileImage, firstName, middleName, lastName },
     });
     setComment('');
   };
@@ -92,8 +100,7 @@ export default function Comments({ room }) {
           onScroll={e => {
             if (e.target.scrollTop === 0)
               socket.emit('load-old-comments', comments[0]);
-          }}
-        >
+          }}>
           {comments.map(comment => (
             <Comment key={comment._id} pd='.5em .75em'>
               <ProfileImage
@@ -120,8 +127,7 @@ export default function Comments({ room }) {
               value={comment}
               onChange={e => setComment(e.target.value)}
               ref={commentInputRef}
-              placeholder='Write a comment...'
-            ></textarea>
+              placeholder='Write a comment...'></textarea>
             <FormControl>
               <BlueButton type='submit' disabled={!comment}>
                 Send
@@ -135,71 +141,3 @@ export default function Comments({ room }) {
     </Card>
   );
 }
-
-const CommentList = styled.div`
-  flex-grow: 1;
-  scroll-behavior: smooth;
-  overflow-y: auto;
-`;
-
-const CommentForm = styled(Form)`
-  flex-shrink: 0;
-  gap: 0.5em;
-
-  textarea {
-    grid-column: span 2;
-    height: auto;
-    max-height: 400px;
-  }
-`;
-
-const Comment = styled(CardItem)`
-  display: flex;
-`;
-
-const CommentContent = styled.div`
-  flex: 1 1 0;
-  position: relative;
-  margin-left: 10px;
-  background-color: var(--colors-primary-dark-2);
-  border-radius: 10px;
-  padding: 5px 10px;
-  box-shadow: var(--shadow-border);
-
-  ::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    right: 100%;
-    border: none;
-    border-top: 7px solid transparent;
-    border-bottom: 7px solid transparent;
-    border-right: 7px solid var(--colors-primary-dark-2);
-  }
-`;
-
-const CommentText = styled.div`
-  white-space: pre-wrap;
-  word-break: break-word;
-  hyphens: auto;
-  font-size: 0.95rem;
-`;
-
-const CommentCreatedAt = styled.div`
-  font-size: 0.8rem;
-  font-style: italic;
-  text-align: right;
-`;
-
-const Username = styled.div`
-  font-weight: 700;
-`;
-
-const SignInToComment = styled(Link)`
-  text-align: center;
-  transition: color 300ms;
-
-  :hover {
-    color: var(--colors-blue);
-  }
-`;

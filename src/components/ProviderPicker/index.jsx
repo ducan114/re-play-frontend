@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Card, CardItem, CardTitle, CardContent } from '../styles/cards';
-import GoogleLogo from '../assets/images/google.png';
+import { Card, CardItem, CardTitle, CardContent } from '../../styles/cards';
+import GoogleLogo from '../../assets/images/google.png';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -17,8 +17,7 @@ export default function ProviderPicker() {
           href={`${API_BASE_URL}/signin/oauth2/google`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          bb
-        >
+          bb>
           <ProviderLogo src={GoogleLogo} alt='google-logo' />
           <span>Google</span>
         </Provider>

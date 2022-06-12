@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Backdrop, Modal as StyledModal } from '../styles/modals';
+import { Backdrop, Wrapper } from './Modal.styles';
 
 export default function Modal({ onBackdropClick, children }) {
   useEffect(() => {
@@ -12,7 +12,7 @@ export default function Modal({ onBackdropClick, children }) {
 
   return (
     <Backdrop onClick={onBackdropClick}>
-      <StyledModal
+      <Wrapper
         as={motion.div}
         onClick={e => e.stopPropagation()}
         initial={{ y: '-100vh', opacity: 0 }}
@@ -28,7 +28,7 @@ export default function Modal({ onBackdropClick, children }) {
         }}
         exit={{ y: '100vh', opacity: 0 }}>
         {children}
-      </StyledModal>
+      </Wrapper>
     </Backdrop>
   );
 }

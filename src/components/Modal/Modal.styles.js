@@ -13,7 +13,7 @@ export const Backdrop = styled.div`
   align-items: center;
 `;
 
-export const Modal = styled.div`
+export const Wrapper = styled.div`
   width: clamp(50%, 800px, 90%);
   padding: 2em;
   border-radius: 10px;

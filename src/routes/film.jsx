@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
 import Comments from '../components/Comments/';
 import EpisodeModal from '../components/EpisodeModal/';
-import FilmModal from '../components/FilmModal/';
+import FilmModal from '../components/FIlmModal/index';
 import FilmActions from '../components/FilmActions/';
 import Loader from '../components/Loader/';
 import NotFound from '../components/NotFound/';

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAPIContext } from '../contexts/APIContext';
-import FilmModal from '../components/FilmModal';
-import PermissionDenied from '../components/PermissionDenied';
+import FilmModal from '../components/FilmModal/index';
+import PermissionDenied from '../components/PermissionDenied/index';
 import Loader from '../components/Loader';
 import styled from 'styled-components';
 import { AnimatePresence } from 'framer-motion';

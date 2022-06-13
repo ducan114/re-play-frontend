@@ -1,13 +1,17 @@
 import { useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import useMountedState from '../hooks/useMountedState';
-import { useAPIContext } from '../contexts/APIContext';
-import Modal from './Modal';
-import { PosterPriviewer } from './FIlmModal/FilmModal.styles';
+import useMountedState from '../../hooks/useMountedState';
+import { useAPIContext } from '../../contexts/APIContext';
+import Modal from '../Modal/';
+import { PosterPriviewer } from './FilmModal.styles';
 import toast from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Form, FormTitle, FormControl } from '../styles/forms';
-import { PrimaryButton, SuccessButton, DangerButton } from '../styles/buttons';
+import { Form, FormTitle, FormControl } from '../../styles/forms';
+import {
+  PrimaryButton,
+  SuccessButton,
+  DangerButton
+} from '../../styles/buttons';
 
 export default function FilmModal({
   onBackdropClick,

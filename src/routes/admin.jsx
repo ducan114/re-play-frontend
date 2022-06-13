@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAPIContext } from '../contexts/APIContext';
-import FilmModal from '../components/FIlmModal.jsx';
-import PermissionDenied from '../components/PermissionDenied/index.jsx';
-import Loader from '../components/Loader/index.jsx';
+import FilmModal from '../components/FIlmModal/';
+import PermissionDenied from '../components/PermissionDenied/';
+import Loader from '../components/Loader/';
 import styled from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
 import { Container } from '../styles/containers';

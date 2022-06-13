@@ -1,26 +1,22 @@
 import { useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import useMountedState from '../../hooks/useMountedState';
-import { useAPIContext } from '../../contexts/APIContext';
-import Modal from '../Modal';
-import { PosterPriviewer } from './FilmModal.styles';
+import useMountedState from '../hooks/useMountedState';
+import { useAPIContext } from '../contexts/APIContext';
+import Modal from './Modal';
+import { PosterPriviewer } from './FIlmModal/FilmModal.styles';
 import toast from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Form, FormTitle, FormControl } from '../../styles/forms';
-import {
-  PrimaryButton,
-  SuccessButton,
-  DangerButton,
-} from '../../styles/buttons';
+import { Form, FormTitle, FormControl } from '../styles/forms';
+import { PrimaryButton, SuccessButton, DangerButton } from '../styles/buttons';
 
 export default function FilmModal({
   onBackdropClick,
   onSuccess,
   action,
-  film,
+  film
 }) {
   const {
-    API: { Film },
+    API: { Film }
   } = useAPIContext();
   const { slug } = useParams();
   const [poster, setPoster] = useState((film && film.poster) || null);
@@ -63,7 +59,7 @@ export default function FilmModal({
           if (onSuccess) onSuccess(data.slug);
           return data.message;
         },
-        error: `Failed to ${action.toLowerCase()} film\nPlease check your connections`,
+        error: `Failed to ${action.toLowerCase()} film\nPlease check your connections`
       }
     );
   };
@@ -93,12 +89,14 @@ export default function FilmModal({
           name='description'
           id='description'
           value={description}
-          onChange={e => setDescription(e.target.value)}></textarea>
+          onChange={e => setDescription(e.target.value)}
+        ></textarea>
         <PrimaryButton
           as={motion.label}
           whileHover={{ scale: 1.0125 }}
           whileTap={{ scale: 0.9875 }}
-          data-select-image>
+          data-select-image
+        >
           Select a poster image
           <input
             onChange={onPosterSelect}
@@ -116,11 +114,11 @@ export default function FilmModal({
               initial={{ height: 0, opacity: 0 }}
               animate={{
                 height: posterLoading ? 0 : 'auto',
-                opacity: posterLoading ? 0 : 1,
+                opacity: posterLoading ? 0 : 1
               }}
               exit={{ height: 0, opacity: 0 }}
               transition={{
-                duration: 1,
+                duration: 1
               }}
               src={poster}
               alt='poster-preview'
@@ -139,7 +137,8 @@ export default function FilmModal({
             onClick={onBackdropClick}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            shadow>
+            shadow
+          >
             Close
           </DangerButton>
           <SuccessButton
@@ -147,7 +146,8 @@ export default function FilmModal({
             whileHover={{ scale: processing ? 1 : 1.05 }}
             whileTap={{ scale: processing ? 1 : 0.95 }}
             disabled={processing}
-            shadow>
+            shadow
+          >
             {action}
           </SuccessButton>
         </FormControl>

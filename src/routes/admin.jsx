@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAPIContext } from '../contexts/APIContext';
-import FilmModal from '../components/FIlmModal/index.jsx';
+import FilmModal from '../components/FIlmModal.jsx';
 import PermissionDenied from '../components/PermissionDenied/index.jsx';
 import Loader from '../components/Loader/index.jsx';
 import styled from 'styled-components';

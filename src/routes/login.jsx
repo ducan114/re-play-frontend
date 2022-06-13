@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAPIContext } from '../contexts/APIContext';
-import ProviderPicker from '../components/ProviderPicker';
+import ProviderPicker from '../components/ProviderPicker/';
 import { Container } from '../styles/containers';
 
 export default function Login() {

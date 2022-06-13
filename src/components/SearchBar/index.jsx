@@ -15,7 +15,6 @@ export default function SearchBar({ setSearchTerm }) {
   // Debounce user's search string typing to reduce API calls.
   useEffect(() => {
     const timer = setTimeout(() => {
-      console.log(searchParams);
       setSearchTerm(searchString);
       if (!searchString) {
         searchParams.delete('q');
@@ -45,7 +44,8 @@ export default function SearchBar({ setSearchTerm }) {
           <label
             htmlFor='rpsearch'
             onClick={() => setSearchString('')}
-            hidden={!searchString}>
+            hidden={!searchString}
+          >
             <span className='material-symbols-outlined'>clear</span>
           </label>
         </SearchBox>

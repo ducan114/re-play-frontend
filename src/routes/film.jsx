@@ -6,12 +6,12 @@ import styled from 'styled-components';
 import toast from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
 import Comments from '../components/Comments';
-import EpisodeModal from '../components/EpisodeModal';
-import FilmModal from '../components/FilmModal';
-import FilmActions from '../components/FilmActions';
-import Loader from '../components/Loader';
-import NotFound from '../components/NotFound';
-import Thumbnail from '../components/Thumbnail';
+import EpisodeModal from '../components/EpisodeModal/';
+import FilmModal from '../components/FilmModal/';
+import FilmActions from '../components/FilmActions/';
+import Loader from '../components/Loader/';
+import NotFound from '../components/NotFound/';
+import Thumbnail from '../components/Thumbnail/';
 import { Container } from '../styles/containers';
 import { Card, CardContent, CardItem, CardTitle } from '../styles/cards';
 import { LikeButton, DislikeButton } from '../styles/buttons';
@@ -27,7 +27,7 @@ export default function Film() {
     setNewUpdate,
     userReaction,
     likeFilm,
-    dislikeFilm,
+    dislikeFilm
   } = useFilmFetch();
   const { user, API } = useAPIContext();
   const [showAddEpisode, setShowAddEpisode] = useState(false);
@@ -41,7 +41,7 @@ export default function Film() {
         navigate('/');
         return data.message;
       },
-      error: 'Failed to delete film\nPlease check your connections',
+      error: 'Failed to delete film\nPlease check your connections'
     });
 
   const scaleUp = { scale: 1.05 };
@@ -59,7 +59,8 @@ export default function Film() {
                 <Thumbnail
                   img={film.poster}
                   onLoaded={() => setThumbnailLoading(false)}
-                  hidden={thumbnailLoading}>
+                  hidden={thumbnailLoading}
+                >
                   {user && user.role === 'admin' && (
                     <FilmActions>
                       <motion.span
@@ -67,7 +68,8 @@ export default function Film() {
                         whileHover={scaleUp}
                         whileTap={scaleDown}
                         onClick={() => setShowUpdateFilm(true)}
-                        title='Update'>
+                        title='Update'
+                      >
                         edit
                       </motion.span>
                       <motion.span
@@ -75,7 +77,8 @@ export default function Film() {
                         whileHover={scaleUp}
                         whileTap={scaleDown}
                         onClick={handleDeleteFilm}
-                        title='Delete'>
+                        title='Delete'
+                      >
                         delete
                       </motion.span>
                       <motion.span
@@ -83,7 +86,8 @@ export default function Film() {
                         whileHover={scaleUp}
                         whileTap={scaleDown}
                         onClick={() => setShowAddEpisode(true)}
-                        title='New episode'>
+                        title='New episode'
+                      >
                         add
                       </motion.span>
                     </FilmActions>
@@ -103,11 +107,13 @@ export default function Film() {
                     gap='.5em'
                     title={film.likes}
                     liked={userReaction === 'like'}
-                    onClick={likeFilm}>
+                    onClick={likeFilm}
+                  >
                     <motion.span
                       whileHover={scaleUp}
                       whileTap={scaleDown}
-                      className='material-symbols-outlined'>
+                      className='material-symbols-outlined'
+                    >
                       thumb_up
                     </motion.span>
                     {film.likes}
@@ -116,11 +122,13 @@ export default function Film() {
                     gap='.5em'
                     title={film.dislikes}
                     disliked={userReaction === 'dislike'}
-                    onClick={dislikeFilm}>
+                    onClick={dislikeFilm}
+                  >
                     <motion.span
                       whileHover={scaleUp}
                       whileTap={scaleDown}
-                      className='material-symbols-outlined'>
+                      className='material-symbols-outlined'
+                    >
                       thumb_down
                     </motion.span>
                     {film.dislikes}
@@ -138,13 +146,15 @@ export default function Film() {
               fwrap
               centered={film.episodes.length === 0}
               cg='.75em'
-              rg='.75em'>
+              rg='.75em'
+            >
               {film.episodes.length === 0 && 'This film has no episode yet'}
               {film.episodes.map(ep => (
                 <Episode
                   as={Link}
                   to={`/films/${slug}/${ep.episodeNumber}`}
-                  key={ep.episodeNumber}>
+                  key={ep.episodeNumber}
+                >
                   {ep.episodeNumber}
                 </Episode>
               ))}

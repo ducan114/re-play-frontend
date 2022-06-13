@@ -5,12 +5,12 @@ import { useAPIContext } from '../contexts/APIContext';
 import styled from 'styled-components';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
-import EpisodeModal from '../components/EpisodeModal';
-import NotFound from '../components/NotFound';
-import Loader from '../components/Loader';
-import VideoPlayer from '../components/VideoPlayer';
-import EpisodeActions from '../components/EpisodeActions';
-import Comments from '../components/Comments';
+import EpisodeModal from '../components/EpisodeModal/';
+import NotFound from '../components/NotFound/';
+import Loader from '../components/Loader/';
+import VideoPlayer from '../components/VideoPlayer/';
+import EpisodeActions from '../components/EpisodeActions/';
+import Comments from '../components/Comments/';
 import { Container } from '../styles/containers';
 import { LikeButton, DislikeButton } from '../styles/buttons';
 import { Card, CardContent, CardItem } from '../styles/cards';
@@ -26,11 +26,11 @@ export default function Episode() {
     setNewUpdate,
     userReaction,
     likeEpisode,
-    dislikeEpisode,
+    dislikeEpisode
   } = useEpisodeFetch();
   const {
     user,
-    API: { Episode },
+    API: { Episode }
   } = useAPIContext();
   const [showUpdateEpisode, setShowUpdateEpisode] = useState(false);
   const playerRef = useRef(null);
@@ -45,13 +45,13 @@ export default function Episode() {
     controls: true,
     responsive: true,
     fluid: true,
-    playbackRates: [0.5, 1, 1.5, 2],
+    playbackRates: [0.5, 1, 1.5, 2]
   };
   const videoPlayerSources = [
     {
       src: episode && getVideoSource(episode.videoId),
-      type: episode && episode.videoMimeType,
-    },
+      type: episode && episode.videoMimeType
+    }
   ];
   const videoPlayerPoster = (episode && episode.thumbnail) || '';
 
@@ -84,7 +84,7 @@ export default function Episode() {
         navigate(`/films/${slug}`);
         return data.message;
       },
-      error: 'Failed to delete film\nPlease check your connections',
+      error: 'Failed to delete film\nPlease check your connections'
     });
 
   const scaleUp = { scale: 1.05 };
@@ -120,7 +120,8 @@ export default function Episode() {
                   whileTap={scaleDown}
                   title={episode.likes}
                   liked={userReaction === 'like'}
-                  onClick={likeEpisode}>
+                  onClick={likeEpisode}
+                >
                   <span className='material-symbols-outlined'>thumb_up</span>
                   {episode.likes}
                 </LikeButton>
@@ -131,7 +132,8 @@ export default function Episode() {
                   whileTap={scaleDown}
                   title={episode.dislikes}
                   disliked={userReaction === 'dislike'}
-                  onClick={dislikeEpisode}>
+                  onClick={dislikeEpisode}
+                >
                   <span className='material-symbols-outlined'>thumb_down</span>
                   {episode.dislikes}
                 </DislikeButton>
@@ -142,7 +144,8 @@ export default function Episode() {
                       whileHover={scaleUp}
                       whileTap={scaleDown}
                       title='Update'
-                      onClick={() => setShowUpdateEpisode(true)}>
+                      onClick={() => setShowUpdateEpisode(true)}
+                    >
                       edit
                     </motion.span>
                     <motion.span
@@ -150,7 +153,8 @@ export default function Episode() {
                       whileHover={scaleUp}
                       whileTap={scaleDown}
                       title='Delete'
-                      onClick={handleDeleteEpisode}>
+                      onClick={handleDeleteEpisode}
+                    >
                       delete
                     </motion.span>
                   </EpisodeActions>

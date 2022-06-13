@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import useFilmsFetch from '../hooks/useFilmsFetch';
-import Loader from '../components/Loader';
-import Thumbnail from '../components/Thumbnail';
-import SearchBar from '../components/SearchBar';
+import Loader from '../components/Loader/';
+import Thumbnail from '../components/Thumbnail/';
+import SearchBar from '../components/SearchBar/';
 import { Container } from '../styles/containers';
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const { films, loading, imagesLoading, setImagesLoading } = useFilmsFetch({
-    searchTerm,
+    searchTerm
   });
 
   return (
@@ -20,7 +20,8 @@ export default function Home() {
         gtc='repeat(auto-fill, minmax(200px, 1fr))'
         cg='1em'
         rg='1em'
-        style={{ minHeight: '200vh' }}>
+        style={{ minHeight: '200vh' }}
+      >
         {films.map(film => (
           <Thumbnail
             title={film.title}

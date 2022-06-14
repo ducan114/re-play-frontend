@@ -7,7 +7,7 @@ export default function useFilmFetch() {
   const params = useParams();
   const {
     user,
-    API: { Film, FilmReaction },
+    API: { Film, FilmReaction }
   } = useAPIContext();
   const [film, setFilm] = useState(undefined);
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ export default function useFilmFetch() {
           setNewUpdate(true);
         })
       : toast.error(`Please sign in to ${reaction} film`, {
-          id: 'Require sign in',
+          id: 'Require sign in'
         });
 
   const likeFilm = () => reactToFilm('like');
@@ -79,6 +79,6 @@ export default function useFilmFetch() {
     setNewUpdate,
     userReaction,
     likeFilm,
-    dislikeFilm,
+    dislikeFilm
   };
 }

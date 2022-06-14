@@ -11,7 +11,12 @@ export default function Modal({ onBackdropClick, children }) {
   }, []);
 
   return (
-    <Backdrop onClick={onBackdropClick}>
+    <Backdrop
+      onClick={e => {
+        e.stopPropagation();
+        onBackdropClick();
+      }}
+    >
       <Wrapper
         as={motion.div}
         onClick={e => e.stopPropagation()}
@@ -23,10 +28,11 @@ export default function Modal({ onBackdropClick, children }) {
             duration: 0.2,
             type: 'spring',
             damping: 25,
-            stiffness: 500,
-          },
+            stiffness: 500
+          }
         }}
-        exit={{ y: '100vh', opacity: 0 }}>
+        exit={{ y: '100vh', opacity: 0 }}
+      >
         {children}
       </Wrapper>
     </Backdrop>

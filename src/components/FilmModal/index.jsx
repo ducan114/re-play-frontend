@@ -34,8 +34,8 @@ export default function FilmModal({
   const posterInputRef = useRef(null);
 
   const handleSubmit = e => {
-    if (processing) return;
     e.preventDefault();
+    if (processing) return;
     if (!title) return toast.error('Title is required!');
     if (!poster) return toast.error('Poster image is required!');
     if (

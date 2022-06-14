@@ -61,6 +61,8 @@ export const FormControl = styled.div`
   bottom: 0;
   padding-right: 0.5em;
   `}
+  padding-top: .25em;
+  padding-bottom: 0.25em;
   grid-column: span 2;
   justify-self: end;
   display: flex;
@@ -70,7 +72,7 @@ export const FormControl = styled.div`
 export const FormTitle = styled.div`
   text-align: ${props => props.center};
   margin: ${props => props.m || '0 0 .5em'};
-  font-size: 1.75rem;
+  font-size: ${props => props.fs || '1.75rem'};
   font-weight: 700;
   grid-column: span 2;
 `;

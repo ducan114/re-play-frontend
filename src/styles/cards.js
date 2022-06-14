@@ -28,7 +28,7 @@ export const CardTitle = styled.h1`
   font-size: ${props => props.fs || '2rem'};
   margin: ${props => props.m};
   color: ${props => props.c};
-  font-weight: 700;
+  font-weight: ${props => props.wght || 700};
 `;
 
 export const CardItem = styled(motion.div)`

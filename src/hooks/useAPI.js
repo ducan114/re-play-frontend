@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { User, Film, Episode, FilmReaction, EpisodeReaction } from '../API';
+import {
+  User,
+  Film,
+  Episode,
+  FilmReaction,
+  EpisodeReaction,
+  Genre
+} from '../API';
 
 export default function useAPI() {
   const [accessToken, setAccessToken] = useState(null);
@@ -48,19 +55,24 @@ export default function useAPI() {
     refreshTokenIfNeeded(EpisodeReaction.update, slug, episodeNumber, reaction);
   const deleteEpisodeReaction = (slug, episodeNumber) =>
     refreshTokenIfNeeded(EpisodeReaction.delete, slug, episodeNumber);
+  const createGenre = (name, description) =>
+    refreshTokenIfNeeded(Genre.create, name, description);
+  const updateGenre = (name, newName, newDescription) =>
+    refreshTokenIfNeeded(Genre.update, name, newName, newDescription);
+  const deleteGenre = name => refreshTokenIfNeeded(Genre.delete, name);
 
   return {
     User: {
       getInfo: getUserInfo,
       refreshToken: User.refreshToken,
-      signOut: User.signOut,
+      signOut: User.signOut
     },
     Film: {
       findOne: Film.findOne,
       findMany: Film.findMany,
       create: createFilm,
       update: updateFilm,
-      delete: deleteFilm,
+      delete: deleteFilm
     },
     Episode: {
       findOne: Episode.findOne,
@@ -68,19 +80,26 @@ export default function useAPI() {
       update: updateEpisode,
       delete: deleteEpisode,
       isAvailableEpisodeNumber,
-      updateViews: Episode.updateViews,
+      updateViews: Episode.updateViews
     },
     FilmReaction: {
       findOne: fetchFilmReaction,
       create: createFilmReaction,
       update: updateFilmReaction,
-      delete: deleteFilmReaction,
+      delete: deleteFilmReaction
     },
     EpisodeReaction: {
       findOne: fetchEpisodeReaction,
       create: createEpisodeReaction,
       update: updateEpisodeReaction,
-      delete: deleteEpisodeReaction,
+      delete: deleteEpisodeReaction
     },
+    Genre: {
+      findOne: Genre.findOne,
+      findMany: Genre.findMany,
+      create: createGenre,
+      update: updateGenre,
+      delete: deleteGenre
+    }
   };
 }

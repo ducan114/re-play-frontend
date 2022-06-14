@@ -10,7 +10,7 @@ import { Form, FormTitle, FormControl } from '../../styles/forms';
 import {
   PrimaryButton,
   DangerButton,
-  SuccessButton,
+  SuccessButton
 } from '../../styles/buttons';
 import { getVideoSource } from '../../helpers';
 
@@ -18,10 +18,10 @@ export default function EpisodeModal({
   onBackdropClick,
   onSuccess,
   action,
-  episode,
+  episode
 }) {
   const {
-    API: { Episode },
+    API: { Episode }
   } = useAPIContext();
   const params = useParams();
   const [episodeNumber, setEpisodeNumber] = useState(
@@ -60,10 +60,10 @@ export default function EpisodeModal({
             setIsValidEpisodeNumber(data.isAvailable);
             return `Episode number is available`;
           },
-          error: err => err.message,
+          error: err => err.message
         },
         {
-          id: 'checkEpisodeNumber',
+          id: 'checkEpisodeNumber'
         }
       );
     }, 500);
@@ -112,7 +112,7 @@ export default function EpisodeModal({
           if (data.accessToken) setAccessToken(data.accessToken);
           return data.message;
         },
-        error: `Failed to ${action.toLowerCase()} episode\nPlease check your connections`,
+        error: `Failed to ${action.toLowerCase()} episode\nPlease check your connections`
       }
     );
   };
@@ -133,7 +133,8 @@ export default function EpisodeModal({
         onSubmit={handleSubmit}
         pd='.5em'
         ref={newEpisodeForm}
-        encType='multipart/form-data'>
+        encType='multipart/form-data'
+      >
         <FormTitle>{action} episode</FormTitle>
         <label htmlFor='episodeNumber'>Episode number</label>
         <input
@@ -155,7 +156,8 @@ export default function EpisodeModal({
           as={motion.label}
           whileHover={{ scale: 1.0125 }}
           whileTap={{ scale: 0.9875 }}
-          data-select-image>
+          data-select-image
+        >
           Select a thumbnail
           <input
             onChange={onThumbnailSelect}
@@ -172,11 +174,11 @@ export default function EpisodeModal({
               initial={{ height: 0, opacity: 0 }}
               animate={{
                 height: thumbnailLoading ? 0 : 'auto',
-                opacity: thumbnailLoading ? 0 : 1,
+                opacity: thumbnailLoading ? 0 : 1
               }}
               exit={{ height: 0, opacity: 0 }}
               transition={{
-                duration: 1,
+                duration: 1
               }}
               src={thumbnail}
               alt='poster-preview'
@@ -192,7 +194,8 @@ export default function EpisodeModal({
           as={motion.label}
           whileHover={{ scale: 1.0125 }}
           whileTap={{ scale: 0.9875 }}
-          data-select-image>
+          data-select-image
+        >
           Select a video
           <input
             onChange={onVideoSelect}
@@ -209,15 +212,16 @@ export default function EpisodeModal({
               initial={{ height: 0, opacity: 0 }}
               animate={{
                 height: 'auto',
-                opacity: 1,
+                opacity: 1
               }}
               exit={{ height: 0, opacity: 0 }}
               transition={{
-                duration: 1,
+                duration: 1
               }}
               controls
               preload='metadata'
-              ref={videoPriviewerRef}>
+              ref={videoPriviewerRef}
+            >
               <source src={video} />
             </VideoPriviewer>
           )}
@@ -228,7 +232,8 @@ export default function EpisodeModal({
             onClick={onBackdropClick}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            shadow>
+            shadow
+          >
             Close
           </DangerButton>
           <SuccessButton
@@ -236,7 +241,8 @@ export default function EpisodeModal({
             whileHover={{ scale: processing ? 1 : 1.05 }}
             whileTap={{ scale: processing ? 1 : 0.95 }}
             disabled={processing}
-            shadow>
+            shadow
+          >
             {action}
           </SuccessButton>
         </FormControl>

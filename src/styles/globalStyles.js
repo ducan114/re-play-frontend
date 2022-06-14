@@ -37,8 +37,11 @@ export default createGlobalStyle`
   --colors-secondary-translucent: #0004;
   --colors-secondary-translucent-dark: #000000b3;
   --colors-success: #1ba94c;
+  --colors-success-translucent: #26ff7145;
   --colors-danger: #ff3939;
-  --colors-warning: #fff;
+  --colors-danger-translucent: #ff39394d;
+  --colors-warning: #ffce3c;
+  --colors-warning-translucent: #ffce3c4f;
   --colors-blue: #1f66ff;
   --shadow-border: 1px 1px 4px 0 #e7eeef;
   --shadow-border-medium: 0 4px 12px 0 #00000026;

@@ -8,7 +8,12 @@ import { AnimatePresence } from 'framer-motion';
 import { FormTitle, FormControl } from '../../styles/forms';
 import { SuccessButton } from '../../styles/buttons';
 
-export default function GenresModal({ onBackdropClick }) {
+export default function GenresModal({
+  onBackdropClick,
+  selectedGenres,
+  setSelectedGenres,
+  onUpdate
+}) {
   const {
     API: { Genre }
   } = useAPIContext();
@@ -18,9 +23,15 @@ export default function GenresModal({ onBackdropClick }) {
   const [showAddGenre, setShowAddGenre] = useState(false);
   const [showEditGenre, setShowEditGenre] = useState(false);
   const [genreToEdit, setGenreToEdit] = useState();
+  const [isSelected, setIsSelected] = useState({});
 
   useEffect(() => {
     Genre.findMany().then(data => setGenres(data.genres));
+    if (selectedGenres) {
+      const selectedGenresMap = {};
+      selectedGenres.forEach(genre => (selectedGenresMap[genre._id] = true));
+      setIsSelected(selectedGenresMap);
+    }
   }, []);
 
   useEffect(() => {
@@ -28,6 +39,12 @@ export default function GenresModal({ onBackdropClick }) {
     setNewUpdate(false);
     Genre.findMany().then(data => setGenres(data.genres));
   }, [newUpdate]);
+
+  const onClose = () => {
+    if (setSelectedGenres)
+      setSelectedGenres(genres.filter(genre => isSelected[genre._id]));
+    onBackdropClick();
+  };
 
   return (
     <>
@@ -60,17 +77,28 @@ export default function GenresModal({ onBackdropClick }) {
               <GenreItem
                 genre={genre}
                 key={genre._id}
-                onUpdate={() => setNewUpdate(true)}
+                onUpdate={() => {
+                  setNewUpdate(true);
+                  if (onUpdate) onUpdate();
+                }}
                 onEdit={() => {
                   setGenreToEdit(genre);
                   setShowEditGenre(true);
                 }}
+                selected={isSelected[genre._id]}
+                onClick={() =>
+                  selectedGenres &&
+                  setIsSelected({
+                    ...isSelected,
+                    [genre._id]: !isSelected[genre._id]
+                  })
+                }
               />
             ))}
           </GenreList>
           <FormControl sticky>
             <SuccessButton
-              onClick={onBackdropClick}
+              onClick={onClose}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               shadow
@@ -93,7 +121,15 @@ export default function GenresModal({ onBackdropClick }) {
         {showEditGenre && (
           <GenreModal
             onBackdropClick={() => setShowEditGenre(false)}
-            onSuccess={() => setNewUpdate(true)}
+            onSuccess={
+              selectedGenres &&
+              selectedGenres.some(genre => genre.name === genreToEdit.name)
+                ? () => {
+                    setNewUpdate(true);
+                    onUpdate();
+                  }
+                : () => setNewUpdate(true)
+            }
             action='Update'
             genre={genreToEdit}
           />

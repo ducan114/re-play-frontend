@@ -22,3 +22,17 @@ const parseViews = views => {
   views = views.slice(0, dotId + 1 + 1);
   return Number(views);
 };
+
+export function isDiffrentGenres(genres1, genres2) {
+  if (genres1.length !== genres2.length) return true;
+  const sortFunction = (a, b) => {
+    if (a.name > b.name) return -1;
+    if (a.name < b.name) return 1;
+    return 0;
+  };
+  genres1.sort(sortFunction);
+  genres2.sort(sortFunction);
+  for (let i = 0; i < genres1.length; i++)
+    if (genres1[i].name !== genres2[i].name) return true;
+  return false;
+}

@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
+import { useModalContext } from '../../contexts/ModalContext';
 import { motion } from 'framer-motion';
 import { Backdrop, Wrapper } from './Modal.styles';
 
 export default function Modal({ onBackdropClick, children }) {
+  const { increaseModals, decreaseModals } = useModalContext();
   useEffect(() => {
-    document.body.classList.add('modal-open');
-    return () => {
-      document.body.classList.remove('modal-open');
-    };
+    increaseModals();
+    return decreaseModals;
   }, []);
 
   return (

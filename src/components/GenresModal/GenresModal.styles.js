@@ -15,6 +15,7 @@ export const Wrapper = styled(Form)`
 
 export const Genres = styled.div`
   font-weight: 500;
+  align-self: center;
 `;
 
 export const AddGenre = styled(motion.span)`
@@ -38,10 +39,14 @@ export const GenreWrapper = styled.div`
   border-bottom: 1px solid var(--colors-primary-dark-2);
   transition: all 300ms;
   padding: 0.5em;
+  ${props => props.selected && 'box-shadow: var(--shadow-border)'};
+  ${props =>
+    props.selected && 'background-color: var(--colors-primary-dark-3)'};
 
   :hover {
-    box-shadow: var(--shadow-border);
-    background-color: var(--colors-primary-dark-2);
+    ${props => props.selected || 'box-shadow: var(--shadow-border)'};
+    ${props =>
+      props.selected || 'background-color: var(--colors-primary-dark-2)'};
   }
 `;
 

@@ -1,9 +1,10 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useMountedState from '../../hooks/useMountedState';
 import { useAPIContext } from '../../contexts/APIContext';
 import Modal from '../Modal/';
-import { PosterPriviewer } from './FilmModal.styles';
+import GenresModal from '../GenresModal';
+import { PosterPriviewer, GenreList, Genre } from './FilmModal.styles';
 import toast from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Form, FormTitle, FormControl } from '../../styles/forms';
@@ -12,6 +13,7 @@ import {
   SuccessButton,
   DangerButton
 } from '../../styles/buttons';
+import { isDiffrentGenres } from '../../helpers';
 
 export default function FilmModal({
   onBackdropClick,
@@ -28,21 +30,29 @@ export default function FilmModal({
   const [description, setDescription] = useState(
     (film && film.description) || ''
   );
+  const [genres, setGenres] = useState((film && film.genres) || []);
   const [posterLoading, setPosterLoading] = useState(true);
   const [processing, setProcessing] = useMountedState(false);
+  const [showGenresModal, setShowGenresModal] = useState(false);
   const newFilmForm = useRef(null);
   const posterInputRef = useRef(null);
+
+  useEffect(() => {
+    setGenres(film ? film.genres : []);
+  }, [film && film.genres]);
 
   const handleSubmit = e => {
     e.preventDefault();
     if (processing) return;
     if (!title) return toast.error('Title is required!');
     if (!poster) return toast.error('Poster image is required!');
+    const isDiffGenres = isDiffrentGenres(genres, (film && film.genres) || []);
     if (
       film &&
       title === film.title &&
       poster === film.poster &&
-      description === film.description
+      description === film.description &&
+      !isDiffGenres
     )
       return toast.error('There is nothing to update');
     const formData = new FormData(newFilmForm.current);
@@ -51,6 +61,8 @@ export default function FilmModal({
     if (film && description === film.description)
       formData.delete('description');
     if (film && poster === film.poster) formData.delete('poster');
+    if (isDiffGenres)
+      genres.forEach(genre => formData.append('genre', genre.name));
     setProcessing(true);
     toast.promise(
       (action === 'Create'
@@ -74,88 +86,104 @@ export default function FilmModal({
   };
 
   return (
-    <Modal onBackdropClick={onBackdropClick}>
-      <Form onSubmit={handleSubmit} pd='.5em' ref={newFilmForm}>
-        <FormTitle>{action} film</FormTitle>
-        <label htmlFor='title'>Title</label>
-        <input
-          type='text'
-          name='title'
-          id='title'
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-        />
-        <label htmlFor='description' data-for-textarea>
-          Description
-        </label>
-        <textarea
-          type='text'
-          name='description'
-          id='description'
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-        ></textarea>
-        <PrimaryButton
-          as={motion.label}
-          whileHover={{ scale: 1.0125 }}
-          whileTap={{ scale: 0.9875 }}
-          data-select-image
-        >
-          Select a poster image
+    <>
+      <Modal onBackdropClick={onBackdropClick}>
+        <Form onSubmit={handleSubmit} pd='.5em' ref={newFilmForm}>
+          <FormTitle>{action} film</FormTitle>
+          <label htmlFor='title'>Title</label>
           <input
-            onChange={onPosterSelect}
-            type='file'
-            name='poster'
-            accept='image/*'
-            hidden
-            ref={posterInputRef}
+            type='text'
+            name='title'
+            id='title'
+            value={title}
+            onChange={e => setTitle(e.target.value)}
           />
-        </PrimaryButton>
-        <AnimatePresence>
-          {poster && (
-            <PosterPriviewer
-              as={motion.img}
-              initial={{ height: 0, opacity: 0 }}
-              animate={{
-                height: posterLoading ? 0 : 'auto',
-                opacity: posterLoading ? 0 : 1
-              }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{
-                duration: 1
-              }}
-              src={poster}
-              alt='poster-preview'
-              onClick={() => {
-                setPoster(null);
-                setPosterLoading(true);
-                posterInputRef.current.value = '';
-              }}
-              onLoad={() => setPosterLoading(false)}
+          <label htmlFor='description'>Description</label>
+          <textarea
+            type='text'
+            name='description'
+            id='description'
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+          ></textarea>
+          <PrimaryButton
+            as={motion.label}
+            whileHover={{ scale: 1.0125 }}
+            whileTap={{ scale: 0.9875 }}
+            data-select-image
+          >
+            Select a poster image
+            <input
+              onChange={onPosterSelect}
+              type='file'
+              name='poster'
+              accept='image/*'
+              hidden
+              ref={posterInputRef}
             />
-          )}
-        </AnimatePresence>
-        <FormControl sticky>
-          <DangerButton
-            type='button'
-            onClick={onBackdropClick}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            shadow
-          >
-            Close
-          </DangerButton>
-          <SuccessButton
-            type='sunbmit'
-            whileHover={{ scale: processing ? 1 : 1.05 }}
-            whileTap={{ scale: processing ? 1 : 0.95 }}
-            disabled={processing}
-            shadow
-          >
-            {action}
-          </SuccessButton>
-        </FormControl>
-      </Form>
-    </Modal>
+          </PrimaryButton>
+          <AnimatePresence>
+            {poster && (
+              <PosterPriviewer
+                as={motion.img}
+                initial={{ height: 0, opacity: 0 }}
+                animate={{
+                  height: posterLoading ? 0 : 'auto',
+                  opacity: posterLoading ? 0 : 1
+                }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{
+                  duration: 1
+                }}
+                src={poster}
+                alt='poster-preview'
+                onClick={() => {
+                  setPoster(null);
+                  setPosterLoading(true);
+                  posterInputRef.current.value = '';
+                }}
+                onLoad={() => setPosterLoading(false)}
+              />
+            )}
+          </AnimatePresence>
+          <label onClick={() => setShowGenresModal(true)}>Genres</label>
+          <GenreList>
+            {genres.length > 0
+              ? genres.map(genre => <Genre key={genre._id}>{genre.name}</Genre>)
+              : 'This film have not been categorized yet'}
+          </GenreList>
+          <FormControl sticky>
+            <DangerButton
+              type='button'
+              onClick={onBackdropClick}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              shadow
+            >
+              Close
+            </DangerButton>
+            <SuccessButton
+              type='sunbmit'
+              whileHover={{ scale: processing ? 1 : 1.05 }}
+              whileTap={{ scale: processing ? 1 : 0.95 }}
+              disabled={processing}
+              shadow
+            >
+              {action}
+            </SuccessButton>
+          </FormControl>
+        </Form>
+      </Modal>
+      <AnimatePresence>
+        {showGenresModal && (
+          <GenresModal
+            onBackdropClick={() => setShowGenresModal(false)}
+            selectedGenres={genres}
+            setSelectedGenres={setGenres}
+            onUpdate={onSuccess}
+          />
+        )}
+      </AnimatePresence>
+    </>
   );
 }

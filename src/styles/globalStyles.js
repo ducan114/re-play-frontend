@@ -32,6 +32,7 @@ export default createGlobalStyle`
   --colors-primary: #fff;
   --colors-primary-dark-1: #f3f7f7;
   --colors-primary-dark-2: #e7eeef;
+  --colors-primary-dark-3: #aeb3b4;
   --colors-secondary: #39424e;
   --colors-secondary-dark: #000;
   --colors-secondary-translucent: #0004;

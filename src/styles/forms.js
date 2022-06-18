@@ -7,16 +7,12 @@ export const Form = styled.form`
   width: 100%;
   gap: 1em;
   overflow-y: auto;
-  align-items: end;
+  align-items: baseline;
 
   label {
     font-weight: 700;
     cursor: pointer;
     padding: 0.25em 0;
-  }
-
-  label[data-for-textarea] {
-    align-self: baseline;
   }
 
   label[data-select-image] {

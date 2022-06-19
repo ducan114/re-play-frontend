@@ -10,7 +10,8 @@ import {
 
 export default function Genre({ genre, onUpdate, onEdit, selected, onClick }) {
   const {
-    API: { Genre }
+    API: { Genre },
+    user
   } = useAPIContext();
 
   const handleDeleteGenre = () =>
@@ -30,30 +31,32 @@ export default function Genre({ genre, onUpdate, onEdit, selected, onClick }) {
   return (
     <GenreWrapper selected={selected} onClick={onClick}>
       <GenreName>{genre.name}</GenreName>
-      <GenreActions>
-        <EditGenreIcon
-          onClick={e => {
-            e.stopPropagation();
-            onEdit();
-          }}
-          className='material-symbols-outlined'
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          edit
-        </EditGenreIcon>
-        <DeleteGenreIcon
-          onClick={e => {
-            e.stopPropagation();
-            handleDeleteGenre();
-          }}
-          className='material-symbols-outlined'
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          delete
-        </DeleteGenreIcon>
-      </GenreActions>
+      {user && user.role === 'admin' && (
+        <GenreActions>
+          <EditGenreIcon
+            onClick={e => {
+              e.stopPropagation();
+              onEdit();
+            }}
+            className='material-symbols-outlined'
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            edit
+          </EditGenreIcon>
+          <DeleteGenreIcon
+            onClick={e => {
+              e.stopPropagation();
+              handleDeleteGenre();
+            }}
+            className='material-symbols-outlined'
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            delete
+          </DeleteGenreIcon>
+        </GenreActions>
+      )}
     </GenreWrapper>
   );
 }

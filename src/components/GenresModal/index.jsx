@@ -15,7 +15,8 @@ export default function GenresModal({
   onUpdate
 }) {
   const {
-    API: { Genre }
+    API: { Genre },
+    user
   } = useAPIContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [genres, setGenres] = useState([]);
@@ -61,40 +62,46 @@ export default function GenresModal({
             id='rpgsearch'
           />
           <Genres>Genres</Genres>
-          <AddGenre
-            onClick={() => setShowAddGenre(prev => !prev)}
-            className='material-symbols-outlined'
-            whileHover={{
-              scale: 1.1
-            }}
-            whileTap={{ scale: 0.9 }}
-            title='New genre'
-          >
-            add
-          </AddGenre>
+          {user && user.role === 'admin' && (
+            <AddGenre
+              onClick={() => setShowAddGenre(prev => !prev)}
+              className='material-symbols-outlined'
+              whileHover={{
+                scale: 1.1
+              }}
+              whileTap={{ scale: 0.9 }}
+              title='New genre'
+            >
+              add
+            </AddGenre>
+          )}
           <GenreList>
-            {genres.map(genre => (
-              <GenreItem
-                genre={genre}
-                key={genre._id}
-                onUpdate={() => {
-                  setNewUpdate(true);
-                  if (onUpdate) onUpdate();
-                }}
-                onEdit={() => {
-                  setGenreToEdit(genre);
-                  setShowEditGenre(true);
-                }}
-                selected={isSelected[genre._id]}
-                onClick={() =>
-                  selectedGenres &&
-                  setIsSelected({
-                    ...isSelected,
-                    [genre._id]: !isSelected[genre._id]
-                  })
-                }
-              />
-            ))}
+            {genres
+              .filter(genre =>
+                genre.name.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map(genre => (
+                <GenreItem
+                  genre={genre}
+                  key={genre._id}
+                  onUpdate={() => {
+                    setNewUpdate(true);
+                    if (onUpdate) onUpdate();
+                  }}
+                  onEdit={() => {
+                    setGenreToEdit(genre);
+                    setShowEditGenre(true);
+                  }}
+                  selected={isSelected[genre._id]}
+                  onClick={() =>
+                    selectedGenres &&
+                    setIsSelected({
+                      ...isSelected,
+                      [genre._id]: !isSelected[genre._id]
+                    })
+                  }
+                />
+              ))}
           </GenreList>
           <FormControl sticky>
             <SuccessButton

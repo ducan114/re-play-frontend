@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import useFilmsFetch from '../hooks/useFilmsFetch';
 import Loader from '../components/Loader/';
 import Thumbnail from '../components/Thumbnail/';
@@ -6,10 +5,16 @@ import SearchBar from '../components/SearchBar/';
 import { Container } from '../styles/containers';
 
 export default function Home() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const { films, loading, imagesLoading, setImagesLoading } = useFilmsFetch({
-    mode: 'topview',
-    searchTerm
+  const {
+    films,
+    loading,
+    imagesLoading,
+    setImagesLoading,
+    setSearchTerm,
+    genres,
+    setGenres
+  } = useFilmsFetch({
+    mode: 'topview'
   });
 
   return (

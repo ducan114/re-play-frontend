@@ -5,10 +5,13 @@ import { Form } from '../../styles/forms';
 export const Wrapper = styled(Form)`
   label[data-is-icon] {
     display: flex;
+    align-self: center;
   }
-  span.material-symbols-outlined {
+
+  && span.material-symbols-outlined {
     font-size: 1.75rem;
-    align-items: baseline;
+    width: 1em;
+    height: 1em;
     font-variation-settings: 'wght' 500;
   }
 `;
@@ -37,6 +40,7 @@ export const GenreList = styled.div`
 export const GenreWrapper = styled.div`
   display: flex;
   border-bottom: 1px solid var(--colors-primary-dark-2);
+  color: var(--colors-secondary-dark) !important;
   transition: all 300ms;
   padding: 0.5em;
   ${props => props.selected && 'box-shadow: var(--shadow-border)'};

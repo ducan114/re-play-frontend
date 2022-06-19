@@ -8,6 +8,7 @@ export const Form = styled.form`
   gap: 1em;
   overflow-y: auto;
   align-items: baseline;
+  color: var(--colors-secondary-dark);
 
   label {
     font-weight: 700;

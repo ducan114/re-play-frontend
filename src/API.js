@@ -17,20 +17,24 @@ const getUserInfo = accessToken =>
     }
   });
 
-const fetchFilms = (mode, searchTerm = '') =>
+const fetchFilms = (mode, searchTerm = '', genres = []) =>
   (mode === 'topview'
     ? fetch(
-        `${API_BASE_URL}/films/topview${
-          searchTerm && `?searchTerm=${searchTerm}`
-        }`
+        `${API_BASE_URL}/films/topview?searchTerm=${searchTerm}${genres
+          .map(genre => `&genre=${genre}`)
+          .join('')}`
       )
     : mode === 'toplike'
     ? fetch(
-        `${API_BASE_URL}/films/toplike${
-          searchTerm && `?searchTerm=${searchTerm}`
-        }`
+        `${API_BASE_URL}/films/toplike?searchTerm=${searchTerm}${genres
+          .map(genre => `&genre=${genre}`)
+          .join('')}`
       )
-    : fetch(`${API_BASE_URL}/films${searchTerm && `?searchTerm=${searchTerm}`}`)
+    : fetch(
+        `${API_BASE_URL}/films?searchTerm=${searchTerm}${genres
+          .map(genre => `&genre=${genre}`)
+          .join('')}`
+      )
   ).then(res => res.json());
 
 const createFilm = (accessToken, data) =>

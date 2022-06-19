@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import GenresFilter from '../GenresFilter';
 import { Wrapper, SearchBox } from './SearchBar.styles';
 import { Container } from '../../styles/containers';
 
 const DEBOUNCE_TIMEOUT = 300; // milliseconds.
 
-export default function SearchBar({ setSearchTerm }) {
+export default function SearchBar({ setSearchTerm, genres, setGenres }) {
   const [searchString, setSearchString] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -29,7 +30,7 @@ export default function SearchBar({ setSearchTerm }) {
 
   return (
     <Wrapper>
-      <Container flex centered cg='1em'>
+      <Container flex centered cg='.25em'>
         <SearchBox>
           <label htmlFor='rpsearch'>
             <span className='material-symbols-outlined'>search</span>
@@ -49,6 +50,7 @@ export default function SearchBar({ setSearchTerm }) {
             <span className='material-symbols-outlined'>clear</span>
           </label>
         </SearchBox>
+        <GenresFilter genres={genres} setGenres={setGenres} />
       </Container>
     </Wrapper>
   );

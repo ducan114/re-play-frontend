@@ -156,7 +156,7 @@ export default function EpisodeModal({
           as={motion.label}
           whileHover={{ scale: 1.0125 }}
           whileTap={{ scale: 0.9875 }}
-          data-select-image
+          data-select-media
         >
           Select a thumbnail
           <input
@@ -194,7 +194,7 @@ export default function EpisodeModal({
           as={motion.label}
           whileHover={{ scale: 1.0125 }}
           whileTap={{ scale: 0.9875 }}
-          data-select-image
+          data-select-media
         >
           Select a video
           <input

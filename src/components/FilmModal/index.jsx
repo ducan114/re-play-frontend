@@ -110,7 +110,7 @@ export default function FilmModal({
             as={motion.label}
             whileHover={{ scale: 1.0125 }}
             whileTap={{ scale: 0.9875 }}
-            data-select-image
+            data-select-media
           >
             Select a poster image
             <input

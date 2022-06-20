@@ -14,6 +14,10 @@ export const Wrapper = styled(Form)`
     height: 1em;
     font-variation-settings: 'wght' 500;
   }
+
+  @media screen and (max-width: 768px) {
+    display: grid;
+  }
 `;
 
 export const Genres = styled.div`
@@ -57,6 +61,8 @@ export const GenreWrapper = styled.div`
 export const GenreName = styled.div`
   flex: 1 1 0;
   font-size: 1rem;
+  white-space: pre-wrap;
+  word-break: break-word;
 `;
 
 export const GenreActions = styled.div`

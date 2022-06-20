@@ -14,10 +14,12 @@ export const Form = styled.form`
     font-weight: 700;
     cursor: pointer;
     padding: 0.25em 0;
+    align-self: flex-start;
   }
 
-  label[data-select-image] {
+  label[data-select-media] {
     grid-column: span 2;
+    width: 100%;
   }
 
   input,
@@ -31,6 +33,7 @@ export const Form = styled.form`
     position: relative;
     font-size: 1rem;
     border-bottom: 1px solid var(--colors-secondary);
+    width: 100%;
 
     :focus {
       border-bottom-width: 2px;
@@ -47,6 +50,12 @@ export const Form = styled.form`
     background-color: var(--colors-primary-dark-1);
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
   }
 `;
 

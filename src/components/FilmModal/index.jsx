@@ -149,7 +149,9 @@ export default function FilmModal({
           <label onClick={() => setShowGenresModal(true)}>Genres</label>
           <GenreList>
             {genres.length > 0
-              ? genres.map(genre => <Genre key={genre._id}>{genre.name}</Genre>)
+              ? genres.map(genre => (
+                  <Genre key={genre.name}>{genre.name}</Genre>
+                ))
               : 'This film have not been categorized yet'}
           </GenreList>
           <FormControl sticky>

@@ -6,12 +6,14 @@ import { Container } from '../../styles/containers';
 
 const DEBOUNCE_TIMEOUT = 300; // milliseconds.
 
-export default function SearchBar({ setSearchTerm, genres, setGenres }) {
+export default function SearchBar({ setSearchTerm, setGenres }) {
   const [searchString, setSearchString] = useState('');
+  const [gs, setGs] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     setSearchString(searchParams.get('q') || '');
+    setGs(searchParams.getAll('genre').map(genre => ({ name: genre })) || []);
   }, []);
   // Debounce user's search string typing to reduce API calls.
   useEffect(() => {
@@ -27,6 +29,19 @@ export default function SearchBar({ setSearchTerm, genres, setGenres }) {
     }, DEBOUNCE_TIMEOUT);
     return () => clearTimeout(timer);
   }, [searchString]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setGenres(gs);
+      searchParams.delete('genre');
+      setSearchParams(searchParams);
+      gs.forEach(genre => {
+        searchParams.append('genre', genre.name);
+        setSearchParams(searchParams);
+      });
+    }, DEBOUNCE_TIMEOUT * 3);
+    return () => clearTimeout(timer);
+  }, [gs]);
 
   return (
     <Wrapper>
@@ -50,7 +65,7 @@ export default function SearchBar({ setSearchTerm, genres, setGenres }) {
             <span className='material-symbols-outlined'>clear</span>
           </label>
         </SearchBox>
-        <GenresFilter genres={genres} setGenres={setGenres} />
+        <GenresFilter genres={gs} setGenres={setGs} />
       </Container>
     </Wrapper>
   );

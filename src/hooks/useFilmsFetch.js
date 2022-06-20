@@ -37,7 +37,6 @@ export default function useFilmsFetch({ mode = 'search' } = {}) {
     imagesLoading,
     setImagesLoading,
     setSearchTerm,
-    genres,
     setGenres
   };
 }

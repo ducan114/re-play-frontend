@@ -9,7 +9,7 @@ import {
   MobileNavButton,
   NavList,
   NavItem,
-  HeaderProfileImage,
+  HeaderProfileImage
 } from './Header.styles';
 import { Logo } from '../../styles/logos';
 import { SecondaryButton } from '../../styles/buttons';
@@ -20,6 +20,11 @@ export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const location = useLocation();
+
+  const isHomeActive = !!matchPath(location.pathname, '/');
+  const isTopViewActive = !!matchPath(location.pathname, '/films/topview');
+  const isTopLikeActive = !!matchPath(location.pathname, '/films/toplike');
+  const isInFront = isHomeActive || isTopViewActive || isTopLikeActive;
 
   useEffect(() => {
     if (isMobileNavOpen) document.body.classList.add('modal-open');
@@ -35,7 +40,8 @@ export default function Header() {
         <Nav>
           <MobileNavButton
             className='material-symbols-outlined'
-            onClick={() => setIsMobileNavOpen(prev => !prev)}>
+            onClick={() => setIsMobileNavOpen(prev => !prev)}
+          >
             {isMobileNavOpen ? 'close' : 'menu'}
           </MobileNavButton>
 
@@ -44,14 +50,18 @@ export default function Header() {
           </Logo>
 
           <NavList isMobileNavOpen={isMobileNavOpen}>
-            <NavItem active={!!matchPath(location.pathname, '/')}>
-              <Link to='/'>New</Link>
+            <NavItem active={isHomeActive}>
+              <Link to={`/${isInFront ? location.search : ''}`}>New</Link>
             </NavItem>
-            <NavItem active={!!matchPath(location.pathname, '/films/topview')}>
-              <Link to='/films/topview'>Top View</Link>
+            <NavItem active={isTopViewActive}>
+              <Link to={`/films/topview${isInFront ? location.search : ''}`}>
+                Top View
+              </Link>
             </NavItem>
-            <NavItem active={!!matchPath(location.pathname, '/films/toplike')}>
-              <Link to='/films/toplike'>Top Like</Link>
+            <NavItem active={isTopLikeActive}>
+              <Link to={`/films/toplike${isInFront ? location.search : ''}`}>
+                Top Like
+              </Link>
             </NavItem>
           </NavList>
         </Nav>
@@ -75,7 +85,8 @@ export default function Header() {
           <Link to='/login'>
             <SecondaryButton
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}>
+              whileTap={{ scale: 0.95 }}
+            >
               Sign In
             </SecondaryButton>
           </Link>

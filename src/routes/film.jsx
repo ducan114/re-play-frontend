@@ -99,6 +99,11 @@ export default function Film() {
                 <FDescription>
                   {film.description || 'No description.'}
                 </FDescription>
+                <Genres>
+                  {film.genres.map(genre => (
+                    <Genre key={genre.name}>{genre.name}</Genre>
+                  ))}
+                </Genres>
                 <Detail>
                   <div>
                     {film.views} view{film.views > 1 && 's'}
@@ -277,4 +282,22 @@ const Episode = styled.div`
   border-radius: 5px;
   background-color: var(--colors-primary-dark-2);
   box-shadow: var(--shadow-border);
+`;
+
+const Genres = styled.div`
+  display: flex;
+  column-gap: 0.5em;
+  row-gap: 0.25em;
+  flex-wrap: wrap;
+  align-items: center;
+  overflow-y: auto;
+  max-height: 80px;
+`;
+
+const Genre = styled.span`
+  padding: 0.1em 0.75em;
+  border-radius: 100px;
+  background-color: var(--colors-primary-dark-2);
+  color: var(--colors-secondary-dark);
+  font-size: 0.85rem;
 `;

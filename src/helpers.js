@@ -36,3 +36,8 @@ export function isDiffrentGenres(genres1, genres2) {
     if (genres1[i].name !== genres2[i].name) return true;
   return false;
 }
+
+export function sortGenres(genres) {
+  genres.sort((a, b) => (a.name === b.name ? 0 : a.name < b.name ? -1 : 1));
+  return genres;
+}

@@ -7,6 +7,7 @@ import GenreItem from './Genre';
 import { AnimatePresence } from 'framer-motion';
 import { FormTitle, FormControl } from '../../styles/forms';
 import { SuccessButton } from '../../styles/buttons';
+import { sortGenres } from '../../helpers';
 
 export default function GenresModal({
   onBackdropClick,
@@ -27,10 +28,10 @@ export default function GenresModal({
   const [isSelected, setIsSelected] = useState({});
 
   useEffect(() => {
-    Genre.findMany().then(data => setGenres(data.genres));
+    Genre.findMany().then(data => setGenres(sortGenres(data.genres)));
     if (selectedGenres) {
       const selectedGenresMap = {};
-      selectedGenres.forEach(genre => (selectedGenresMap[genre._id] = true));
+      selectedGenres.forEach(genre => (selectedGenresMap[genre.name] = true));
       setIsSelected(selectedGenresMap);
     }
   }, []);
@@ -38,12 +39,16 @@ export default function GenresModal({
   useEffect(() => {
     if (!newUpdate) return;
     setNewUpdate(false);
-    Genre.findMany().then(data => setGenres(data.genres));
+    Genre.findMany().then(data => setGenres(sortGenres(data.genres)));
   }, [newUpdate]);
 
   const onClose = () => {
     if (setSelectedGenres)
-      setSelectedGenres(genres.filter(genre => isSelected[genre._id]));
+      setSelectedGenres(
+        genres
+          .filter(genre => isSelected[genre.name])
+          .map(genre => ({ name: genre.name }))
+      );
     onBackdropClick();
   };
 
@@ -92,12 +97,12 @@ export default function GenresModal({
                     setGenreToEdit(genre);
                     setShowEditGenre(true);
                   }}
-                  selected={isSelected[genre._id]}
+                  selected={isSelected[genre.name]}
                   onClick={() =>
                     selectedGenres &&
                     setIsSelected({
                       ...isSelected,
-                      [genre._id]: !isSelected[genre._id]
+                      [genre.name]: !isSelected[genre.name]
                     })
                   }
                 />

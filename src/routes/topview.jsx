@@ -11,7 +11,6 @@ export default function Home() {
     imagesLoading,
     setImagesLoading,
     setSearchTerm,
-    genres,
     setGenres
   } = useFilmsFetch({
     mode: 'topview'
@@ -19,7 +18,7 @@ export default function Home() {
 
   return (
     <main>
-      <SearchBar setSearchTerm={setSearchTerm} />
+      <SearchBar setSearchTerm={setSearchTerm} setGenres={setGenres} />
       <Container
         pd='2em 0'
         grid={!loading && imagesLoading === 0}

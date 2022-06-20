@@ -11,17 +11,12 @@ export default function Home() {
     imagesLoading,
     setImagesLoading,
     setSearchTerm,
-    genres,
     setGenres
   } = useFilmsFetch();
 
   return (
     <main>
-      <SearchBar
-        setSearchTerm={setSearchTerm}
-        genres={genres}
-        setGenres={setGenres}
-      />
+      <SearchBar setSearchTerm={setSearchTerm} setGenres={setGenres} />
       <Container
         pd='2em 0'
         grid={!loading && imagesLoading === 0}

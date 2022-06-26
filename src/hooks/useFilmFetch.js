@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAPIContext } from '../contexts/APIContext';
 import toast from 'react-hot-toast';
@@ -16,6 +16,7 @@ export default function useFilmFetch() {
   const [slug, setSlug] = useState(params.slug);
   const [userReaction, setUserReaction] = useState(undefined);
   const navigate = useNavigate();
+  const isInitialRender = useRef(true);
 
   const getFilm = async () => {
     try {
@@ -60,7 +61,10 @@ export default function useFilmFetch() {
     getFilm();
   }, [newUpdate]);
 
-  useEffect(() => navigate(`/films/${slug}`), [slug]);
+  useEffect(() => {
+    if (isInitialRender.current) return (isInitialRender.current = false);
+    navigate(`/films/${slug}`);
+  }, [slug]);
 
   useEffect(() => {
     if (!user) return setUserReaction(undefined);

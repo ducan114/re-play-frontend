@@ -22,8 +22,18 @@ export default function useFilmsFetch({ mode = 'search' } = {}) {
       genres.map(genre => genre.name)
     )
       .then(data => {
-        setFilms(data.films);
-        setImagesLoading(data.films.length);
+        setFilms(prevFilms => {
+          const sortFunction = (a, b) => a - b;
+          const prevFilmIds = prevFilms
+            .map(film => film._id)
+            .sort(sortFunction);
+          const filmIds = data.films.map(film => film._id).sort(sortFunction);
+          const isIdenticalFilms = filmIds.every(
+            (filmId, id) => filmId === prevFilmIds[id]
+          );
+          if (!isIdenticalFilms) setImagesLoading(data.films.length);
+          return data.films;
+        });
       })
       .catch(() =>
         toast.error('Fail to load films\nPlease check your connections')

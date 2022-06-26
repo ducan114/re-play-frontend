@@ -17,6 +17,14 @@ export const HeaderProfileImage = styled(ProfileImage)`
   border: 2px solid white;
   padding: 2px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.material-symbols-outlined {
+    font-size: 2.5rem;
+    color: var(--colors-primary);
+  }
 `;
 
 export const StyledMenu = styled(motion.nav)`

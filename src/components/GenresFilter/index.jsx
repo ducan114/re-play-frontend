@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import GenresModal from '../GenresModal';
+import { AnimatePresence } from 'framer-motion';
 
 export default function GenresFilter({ genres, setGenres }) {
   const [showGenresModal, setShowGenresModal] = useState(false);
@@ -12,13 +13,15 @@ export default function GenresFilter({ genres, setGenres }) {
       >
         filter_alt
       </span>
-      {showGenresModal && (
-        <GenresModal
-          onBackdropClick={() => setShowGenresModal(false)}
-          selectedGenres={genres}
-          setSelectedGenres={setGenres}
-        />
-      )}
+      <AnimatePresence>
+        {showGenresModal && (
+          <GenresModal
+            onBackdropClick={() => setShowGenresModal(false)}
+            selectedGenres={genres}
+            setSelectedGenres={setGenres}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }

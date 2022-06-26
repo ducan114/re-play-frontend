@@ -10,18 +10,23 @@ export default createGlobalStyle`
 }
 
 * {
+  -webkit-tap-highlight-color: transparent;
+
   ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
   }
+
   ::-webkit-scrollbar-track {
     background-color: var(--colors-primary-dark-2);
   }
+
   ::-webkit-scrollbar-thumb {
     cursor: pointer;
     border-radius: 5px;
     background-color: var(--colors-secondary);
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background-color: var(--colors-secondary-dark);
   }

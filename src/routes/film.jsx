@@ -12,6 +12,7 @@ import FilmActions from '../components/FilmActions/';
 import Loader from '../components/Loader/';
 import NotFound from '../components/NotFound/';
 import Thumbnail from '../components/Thumbnail/';
+import EpisodesGrid from '../components/EpisodesGrid';
 import { Container } from '../styles/containers';
 import { Card, CardContent, CardItem, CardTitle } from '../styles/cards';
 import { LikeButton, DislikeButton } from '../styles/buttons';
@@ -142,29 +143,11 @@ export default function Film() {
               </Info>
             </FCardContent>
           </FCard>
-          <Card as='section' hidden={thumbnailLoading} m='0 0 2em'>
-            <CardTitle as='h2' fs='1.25rem' m='0 0 .5em'>
-              Episodes
-            </CardTitle>
-            <CardContent
-              flex
-              fwrap
-              centered={film.episodes.length === 0}
-              cg='.75em'
-              rg='.75em'
-            >
-              {film.episodes.length === 0 && 'This film has no episode yet'}
-              {film.episodes.map(ep => (
-                <Episode
-                  as={Link}
-                  to={`/films/${slug}/${ep.episodeNumber}`}
-                  key={ep.episodeNumber}
-                >
-                  {ep.episodeNumber}
-                </Episode>
-              ))}
-            </CardContent>
-          </Card>
+          <EpisodesGrid
+            slug={slug}
+            episodes={film.episodes}
+            hidden={thumbnailLoading}
+          />
           {!thumbnailLoading && <Comments room={film._id} />}
           <AnimatePresence exitBeforeEnter>
             {showAddEpisode && (
@@ -256,32 +239,19 @@ const FDescription = styled.p`
   flex: 1 1 0;
   overflow: auto;
   margin-bottom: 0.5em;
+  padding-right: 0.5em;
   white-space: pre-wrap;
-
-  &::-webkit-scrollbar-track {
-    background-color: var(--colors-secondary-translucent);
-  }
+  font-weight: 300;
+  font-size: 0.95rem;
 
   &::-webkit-scrollbar-thumb {
     border-radius: 0;
-    background-color: var(--colors-primary-dark-2);
   }
 
   @media screen and (max-width: 768px) {
     flex: 1;
     max-height: 150px;
   }
-`;
-
-const Episode = styled.div`
-  min-width: 30px;
-  padding: 0.25em 0.5em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  background-color: var(--colors-primary-dark-2);
-  box-shadow: var(--shadow-border);
 `;
 
 const Genres = styled.div`

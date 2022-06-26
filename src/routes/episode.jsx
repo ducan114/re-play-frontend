@@ -11,6 +11,7 @@ import Loader from '../components/Loader/';
 import VideoPlayer from '../components/VideoPlayer/';
 import EpisodeActions from '../components/EpisodeActions/';
 import Comments from '../components/Comments/';
+import EpisodesGrid from '../components/EpisodesGrid';
 import { Container } from '../styles/containers';
 import { LikeButton, DislikeButton } from '../styles/buttons';
 import { Card, CardContent, CardItem } from '../styles/cards';
@@ -23,6 +24,7 @@ export default function Episode() {
     episodeNumber,
     setEpisodeNumber,
     episode,
+    episodes,
     setNewUpdate,
     userReaction,
     likeEpisode,
@@ -106,7 +108,7 @@ export default function Episode() {
                 onReady={handlePlayerReady}
               />
               <CardItem as={EpisodeTitle} pd='.25em'>
-                Ep {episode.episodeNumber}
+                {episode.episodeNumber}
                 {episode.title && ` - ${episode.title}`}
               </CardItem>
               <CardItem as={EpisodeInfo} pd='.25em'>
@@ -162,6 +164,7 @@ export default function Episode() {
               </CardItem>
             </CardContent>
           </Card>
+          <EpisodesGrid slug={slug} episodes={episodes} />
           {!loading && <Comments room={`${episode.filmId}/${episode._id}`} />}
           <AnimatePresence>
             {showUpdateEpisode && (
@@ -187,6 +190,14 @@ export default function Episode() {
 const EpisodeTitle = styled.h1`
   font-weight: 400;
   font-size: 1.5rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.25rem;
+  }
+
+  @media screen and (max-width: 575px) {
+    font-size: 1.125rem;
+  }
 `;
 
 const EpisodeInfo = styled.div`

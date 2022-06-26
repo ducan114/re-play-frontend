@@ -46,7 +46,7 @@ export default function Header() {
           </MobileNavButton>
 
           <Logo>
-            <Link to='/'>RePlay</Link>
+            <Link to={`/${isInFront ? location.search : ''}`}>RePlay</Link>
           </Logo>
 
           <NavList isMobileNavOpen={isMobileNavOpen}>
@@ -65,7 +65,11 @@ export default function Header() {
             </NavItem>
           </NavList>
         </Nav>
-        {loadingUser ? null : user ? (
+        {loadingUser ? (
+          <HeaderProfileImage as='span' className='material-symbols-outlined'>
+            account_circle
+          </HeaderProfileImage>
+        ) : user ? (
           <>
             <HeaderProfileImage
               src={user.profileImage}

@@ -56,7 +56,9 @@ export default function GenresModal({
     <>
       <Modal onBackdropClick={onBackdropClick}>
         <Wrapper as='div' pd='.5em'>
-          <FormTitle>Genres Management</FormTitle>
+          <FormTitle>
+            Genres {selectedGenres ? 'Selection' : 'Management'}
+          </FormTitle>
           <label htmlFor='rpgsearch' data-is-icon>
             <span className='material-symbols-outlined'>search</span>
           </label>

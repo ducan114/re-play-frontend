@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAPIContext } from '../contexts/APIContext';
 import toast from 'react-hot-toast';
@@ -7,18 +7,21 @@ export default function useEpisodeFetch() {
   const params = useParams();
   const {
     user,
-    API: { Episode, EpisodeReaction },
+    API: { Episode, EpisodeReaction, Film }
   } = useAPIContext();
   const [episodeNumber, setEpisodeNumber] = useState(params.episodeNumber);
   const [episode, setEpisode] = useState(undefined);
   const [loading, setLoading] = useState(true);
   const [newUpdate, setNewUpdate] = useState(false);
   const [userReaction, setUserReaction] = useState(undefined);
+  const [episodes, setEpisodes] = useState([]);
   const navigate = useNavigate();
+  const isInitialRender = useRef(true);
 
   const getEpisode = async () => {
     try {
       setEpisode(await Episode.findOne(params.slug, episodeNumber));
+      setEpisodes((await Film.findOne(params.slug)).episodes);
     } catch (err) {
       if (err.message === 'Episode not found') {
         setEpisode(undefined);
@@ -43,7 +46,7 @@ export default function useEpisodeFetch() {
           setNewUpdate(true);
         })
       : toast.error(`Please sign in to ${reaction} episode`, {
-          id: 'Require sign in',
+          id: 'Require sign in'
         });
 
   const likeEpisode = () => reactToEpisode('like');
@@ -57,10 +60,10 @@ export default function useEpisodeFetch() {
     getEpisode();
   }, [newUpdate]);
 
-  useEffect(
-    () => navigate(`/films/${params.slug}/${episodeNumber}`),
-    [episodeNumber]
-  );
+  useEffect(() => {
+    if (isInitialRender.current) return (isInitialRender.current = false);
+    navigate(`/films/${params.slug}/${episodeNumber}`);
+  }, [episodeNumber]);
 
   useEffect(() => {
     if (!user) return setUserReaction(undefined);
@@ -69,8 +72,13 @@ export default function useEpisodeFetch() {
       .catch(console.error);
   }, [user]);
 
+  useEffect(() => {
+    setEpisodeNumber(params.episodeNumber);
+  }, [params.episodeNumber]);
+
   return {
     episode,
+    episodes,
     loading,
     setNewUpdate,
     slug: params.slug,
@@ -78,6 +86,6 @@ export default function useEpisodeFetch() {
     setEpisodeNumber,
     userReaction,
     likeEpisode,
-    dislikeEpisode,
+    dislikeEpisode
   };
 }

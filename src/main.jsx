@@ -16,15 +16,19 @@ render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<App />}>
+        <Route element={<App />}>
           <Route index element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/admin' element={<Admin />} />
-          <Route path='/films/topview' element={<TopView />} />
-          <Route path='/films/toplike' element={<TopLike />} />
-          <Route path='/films/:slug' element={<Film />} />
-          <Route path='/films/:slug/:episodeNumber' element={<Episode />} />
+          <Route path='login' element={<Login />} />
+          <Route path='profile' element={<Profile />} />
+          <Route path='admin' element={<Admin />} />
+          <Route path='films'>
+            <Route path='topview' element={<TopView />} />
+            <Route path='toplike' element={<TopLike />} />
+            <Route path=':slug'>
+              <Route index element={<Film />} />
+              <Route path=':episodeNumber' element={<Episode />} />
+            </Route>
+          </Route>
           <Route path='*' element={<NotFound />} />
         </Route>
       </Routes>

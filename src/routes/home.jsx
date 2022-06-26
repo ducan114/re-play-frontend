@@ -23,7 +23,6 @@ export default function Home() {
         gtc='repeat(auto-fill, minmax(200px, 1fr))'
         cg='1em'
         rg='1em'
-        style={{ minHeight: '200vh' }}
       >
         {films.map(film => (
           <Thumbnail

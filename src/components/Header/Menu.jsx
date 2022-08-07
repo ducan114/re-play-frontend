@@ -7,7 +7,7 @@ import { StyledMenu, MenuItem } from './Header.styles';
 export default function Menu({ admin, onClose }) {
   const {
     setUser,
-    API: { User },
+    API: { User }
   } = useAPIContext();
   const menuRef = useRef(null);
 
@@ -33,22 +33,22 @@ export default function Menu({ admin, onClose }) {
   const dropIn = {
     hidden: {
       scale: 0.75,
-      opacity: 0,
+      opacity: 0
     },
     visible: {
       scale: 1,
       opacity: 1,
       transition: {
-        duration: 0.1,
-      },
+        duration: 0.1
+      }
     },
     exit: {
       scale: 0.75,
       opacity: 0,
       transition: {
-        duration: 0.1,
-      },
-    },
+        duration: 0.1
+      }
+    }
   };
 
   return (
@@ -57,7 +57,8 @@ export default function Menu({ admin, onClose }) {
       animate='visible'
       exit='exit'
       variants={dropIn}
-      ref={menuRef}>
+      ref={menuRef}
+    >
       <ul>
         <MenuItem>
           <Link to='/profile'>Profile</Link>

@@ -27,6 +27,10 @@ export default function useAPI() {
   };
 
   const getUserInfo = () => refreshTokenIfNeeded(User.getInfo);
+  const signOut = async () => {
+    await User.signOut();
+    setAccessToken(null);
+  };
   const createFilm = data => refreshTokenIfNeeded(Film.create, data);
   const updateFilm = (slug, data) =>
     refreshTokenIfNeeded(Film.update, slug, data);
@@ -65,7 +69,7 @@ export default function useAPI() {
     User: {
       getInfo: getUserInfo,
       refreshToken: User.refreshToken,
-      signOut: User.signOut
+      signOut
     },
     Film: {
       findOne: Film.findOne,

@@ -7,6 +7,17 @@ export default function VideoPlayer({ sources, poster, options, onReady }) {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
 
+  const onKeyDown = e => {
+    const player = playerRef.current;
+    if (!player || player.paused()) return;
+    const callbacks = {
+      ArrowLeft: () => player.currentTime(player.currentTime() - 30),
+      ArrowRight: () => player.currentTime(player.currentTime() + 30)
+    };
+    const callback = callbacks[e.key];
+    if (callback) callback();
+  };
+
   useEffect(() => {
     // make sure Video.js player is only initialized once
     if (!playerRef.current) {
@@ -18,7 +29,7 @@ export default function VideoPlayer({ sources, poster, options, onReady }) {
         {
           ...options,
           sources,
-          poster,
+          poster
         },
         () => {
           console.log('player is ready');
@@ -38,12 +49,14 @@ export default function VideoPlayer({ sources, poster, options, onReady }) {
   // Dispose the Video.js player when the functional component unmounts
   useEffect(() => {
     const player = playerRef.current;
+    document.addEventListener('keydown', onKeyDown);
 
     return () => {
       if (player) {
         player.dispose();
         playerRef.current = null;
       }
+      document.removeEventListener('keypress', onKeyDown);
     };
   }, [playerRef]);
 

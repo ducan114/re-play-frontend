@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import GenresFilter from '../GenresFilter';
 import { Wrapper, SearchBox } from './SearchBar.styles';
@@ -12,10 +12,8 @@ export default function SearchBar({ setSearchTerm, setGenres }) {
   const [gs, setGs] = useState(
     searchParams.getAll('genre').map(genre => ({ name: genre })) || []
   );
-  const isInitialRender = useRef(true);
   // Debounce user's search string typing and genres selection to reduce API calls.
   useEffect(() => {
-    if (isInitialRender.current) return (isInitialRender.current = false);
     const timer = setTimeout(() => {
       setSearchTerm(searchString);
       setGenres(gs);

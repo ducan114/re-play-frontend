@@ -28,9 +28,9 @@ export default function useFilmsFetch({ mode = 'search' } = {}) {
             .map(film => film._id)
             .sort(sortFunction);
           const filmIds = data.films.map(film => film._id).sort(sortFunction);
-          const isIdenticalFilms = filmIds.every(
-            (filmId, id) => filmId === prevFilmIds[id]
-          );
+          const isIdenticalFilms =
+            filmIds.length === prevFilmIds.length &&
+            filmIds.every((filmId, id) => filmId === prevFilmIds[id]);
           if (!isIdenticalFilms) setImagesLoading(data.films.length);
           return data.films;
         });

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useFilmFetch from '../hooks/useFilmFetch';
 import { useAPIContext } from '../contexts/APIContext';
+import { usePushNotificationContext } from '../contexts/PushNotificationContext';
 import styled from 'styled-components';
 import toast from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -16,7 +17,6 @@ import EpisodesGrid from '../components/EpisodesGrid';
 import { Container } from '../styles/containers';
 import { Card, CardContent, CardItem } from '../styles/cards';
 import { SubscribeButton, LikeButton, DislikeButton } from '../styles/buttons';
-import { subscribeUser } from '../pushNotificationSubscription';
 
 export default function Film() {
   const {
@@ -35,6 +35,7 @@ export default function Film() {
     unsubscribe
   } = useFilmFetch();
   const { user, API } = useAPIContext();
+  const { handlePushSubscriptionRequest } = usePushNotificationContext();
   const [showAddEpisode, setShowAddEpisode] = useState(false);
   const [showUpdateFilm, setShowUpdateFilm] = useState(false);
   const navigate = useNavigate();
@@ -49,34 +50,11 @@ export default function Film() {
       error: 'Failed to delete film\nPlease check your connections'
     });
 
-  const handleFilmSubscription = async () => {
+  const handleFilmSubscription = () => {
     if (isSubscribed) return unsubscribe();
     subscribe();
 
-    if (Notification.permission === 'granted') {
-      console.log('Notification accepted');
-      subscribeUser(API.PushNotification.subscribe);
-    } else if (Notification.permission === 'denied') {
-      console.log('Notification blocked');
-      return toast.error(
-        'Notifications is currently blocked\nYou will not be notified'
-      );
-    } else {
-      console.log('Asking for notification permission');
-      toast.promise(Notification.requestPermission(), {
-        loading: 'Asking for notification permission...',
-        success: consent => {
-          console.log(consent);
-          if (consent !== 'granted') {
-            console.log('Notification denied');
-            throw new Error('Permission denied');
-          }
-          subscribeUser(API.PushNotification.subscribe);
-          return 'Permission granted';
-        },
-        error: err => err.message
-      });
-    }
+    handlePushSubscriptionRequest();
   };
 
   const scaleUp = { scale: 1.05 };

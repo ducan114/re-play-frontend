@@ -1,5 +1,6 @@
 import { APIProvider } from './contexts/APIContext';
 import { ModalProvider } from './contexts/ModalContext';
+import { PushNotificationProvider } from './contexts/PushNotificationContext';
 import Header from './components/Header';
 import { Outlet } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
@@ -9,12 +10,14 @@ import * as serviceWorker from './serviceWorkerRegistration';
 export default function App() {
   return (
     <APIProvider>
-      <Header />
-      <ModalProvider>
-        <Outlet />
-      </ModalProvider>
-      <Toaster />
-      <GlobalStyles />
+      <PushNotificationProvider>
+        <Header />
+        <ModalProvider>
+          <Outlet />
+        </ModalProvider>
+        <Toaster />
+        <GlobalStyles />
+      </PushNotificationProvider>
     </APIProvider>
   );
 }

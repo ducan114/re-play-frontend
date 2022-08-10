@@ -35,6 +35,24 @@ export async function subscribeUser(sendSubscription) {
   }
 }
 
+export async function unsubscribeUser() {
+  if ('serviceWorker' in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      if (!registration.pushManager)
+        return console.log('Push manager unavailable');
+
+      const subscription = await registration.pushManager.getSubscription();
+      if (subscription == null) return console.log('No subscription detected');
+
+      await subscription.unsubscribe();
+      console.log('Unsubscribed');
+    } catch (err) {
+      console.log('An error occurred during service worker registration', err);
+    }
+  }
+}
+
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding)

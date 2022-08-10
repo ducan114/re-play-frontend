@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { unsubscribeUser } from '../pushNotificationSubscription';
 
 export default function useUserData(getUserInfo) {
   const [user, setUser] = useState(null);
@@ -15,6 +16,10 @@ export default function useUserData(getUserInfo) {
       .catch(err => {})
       .finally(() => setLoadingUser(false));
   }, []);
+
+  useEffect(() => {
+    if (!loadingUser && !user) unsubscribeUser();
+  }, [loadingUser, user]);
 
   return {
     user,

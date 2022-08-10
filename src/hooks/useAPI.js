@@ -5,7 +5,9 @@ import {
   Episode,
   FilmReaction,
   EpisodeReaction,
-  Genre
+  Genre,
+  FilmSubscription,
+  PushNotification
 } from '../API';
 
 export default function useAPI() {
@@ -64,6 +66,14 @@ export default function useAPI() {
   const updateGenre = (name, newName, newDescription) =>
     refreshTokenIfNeeded(Genre.update, name, newName, newDescription);
   const deleteGenre = name => refreshTokenIfNeeded(Genre.delete, name);
+  const fetchFilmSubscription = slug =>
+    refreshTokenIfNeeded(FilmSubscription.findOne, slug);
+  const createFilmSubscription = slug =>
+    refreshTokenIfNeeded(FilmSubscription.create, slug);
+  const deleteFilmSubscription = slug =>
+    refreshTokenIfNeeded(FilmSubscription.delete, slug);
+  const subscribePushNotification = subscription =>
+    refreshTokenIfNeeded(PushNotification.subscribe, subscription);
 
   return {
     User: {
@@ -104,6 +114,14 @@ export default function useAPI() {
       create: createGenre,
       update: updateGenre,
       delete: deleteGenre
+    },
+    FilmSubscription: {
+      findOne: fetchFilmSubscription,
+      create: createFilmSubscription,
+      delete: deleteFilmSubscription
+    },
+    PushNotification: {
+      subscribe: subscribePushNotification
     }
   };
 }

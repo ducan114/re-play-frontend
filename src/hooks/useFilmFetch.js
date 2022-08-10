@@ -7,7 +7,7 @@ export default function useFilmFetch() {
   const params = useParams();
   const {
     user,
-    API: { Film, FilmReaction }
+    API: { Film, FilmReaction, FilmSubscription }
   } = useAPIContext();
   const [film, setFilm] = useState(undefined);
   const [loading, setLoading] = useState(true);
@@ -15,6 +15,7 @@ export default function useFilmFetch() {
   const [thumbnailLoading, setThumbnailLoading] = useState(true);
   const [slug, setSlug] = useState(params.slug);
   const [userReaction, setUserReaction] = useState(undefined);
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const navigate = useNavigate();
   const isInitialRender = useRef(true);
 
@@ -53,6 +54,24 @@ export default function useFilmFetch() {
 
   const dislikeFilm = () => reactToFilm('dislike');
 
+  const subscribe = () =>
+    user
+      ? FilmSubscription.create(slug).then(data => {
+          setIsSubscribed(data.subscribed);
+        })
+      : toast.error(`Please sign in to subscribe to this film`, {
+          id: 'Require sign in'
+        });
+
+  const unsubscribe = () =>
+    user
+      ? FilmSubscription.delete(slug).then(data => {
+          setIsSubscribed(data.subscribed);
+        })
+      : toast.error(`Please sign in to subscribe to this film`, {
+          id: 'Require sign in'
+        });
+
   useEffect(getFilm, [slug]);
 
   useEffect(() => {
@@ -67,9 +86,16 @@ export default function useFilmFetch() {
   }, [slug]);
 
   useEffect(() => {
-    if (!user) return setUserReaction(undefined);
+    if (!user) {
+      setUserReaction(undefined);
+      setIsSubscribed(false);
+      return;
+    }
     FilmReaction.findOne(slug)
       .then(data => setUserReaction(data.reaction))
+      .catch(console.error);
+    FilmSubscription.findOne(slug)
+      .then(data => setIsSubscribed(data.subscribed))
       .catch(console.error);
   }, [user]);
 
@@ -83,6 +109,9 @@ export default function useFilmFetch() {
     setNewUpdate,
     userReaction,
     likeFilm,
-    dislikeFilm
+    dislikeFilm,
+    isSubscribed,
+    subscribe,
+    unsubscribe
   };
 }

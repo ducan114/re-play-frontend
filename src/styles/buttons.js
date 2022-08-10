@@ -50,6 +50,22 @@ export const BlueButton = styled(Button)`
   --btn-color: var(--colors-primary);
 `;
 
+export const SubscribeButton = styled(Button)`
+  padding: 0.5em;
+  --btn-background-color: transparent;
+  --btn-color: var(--colors-primary);
+
+  span.material-symbols-outlined {
+    color: var(--btn-color);
+    --btn-color: ${props => props.subscribed && 'var(--colors-green)'};
+    ${props => props.subscribed && "font-variation-settings: 'FILL' 1"};
+  }
+
+  :hover span.material-symbols-outlined {
+    --btn-color: var(--colors-green);
+  }
+`;
+
 export const LikeButton = styled(Button)`
   padding: 0.5em;
   --btn-background-color: transparent;

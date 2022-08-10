@@ -225,6 +225,39 @@ const deleteGenre = (accessToken, name) =>
     }
   });
 
+const fetchFilmSubscription = (accessToken, slug) =>
+  fetch(`${API_BASE_URL}/user/subscriptions/films/${slug}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+const createFilmSubscription = (accessToken, slug) =>
+  fetch(`${API_BASE_URL}/user/subscriptions/films/${slug}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+const deleteFilmSubscription = (accessToken, slug) =>
+  fetch(`${API_BASE_URL}/user/subscriptions/films/${slug}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+const subscribePushNotification = (accessToken, subscription) =>
+  fetch(`${API_BASE_URL}/notifications/subscribe`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ subscription })
+  });
+
 export const Film = {
   findOne: fetchFilm,
   findMany: fetchFilms,
@@ -268,4 +301,14 @@ export const Genre = {
   create: createGenre,
   update: updateGenre,
   delete: deleteGenre
+};
+
+export const FilmSubscription = {
+  findOne: fetchFilmSubscription,
+  create: createFilmSubscription,
+  delete: deleteFilmSubscription
+};
+
+export const PushNotification = {
+  subscribe: subscribePushNotification
 };

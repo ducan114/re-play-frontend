@@ -4,6 +4,7 @@ import Header from './components/Header';
 import { Outlet } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import GlobalStyles from './styles/globalStyles';
+import * as serviceWorker from './serviceWorkerRegistration';
 
 export default function App() {
   return (
@@ -17,3 +18,5 @@ export default function App() {
     </APIProvider>
   );
 }
+
+serviceWorker.register();

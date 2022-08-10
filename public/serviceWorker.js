@@ -4,9 +4,8 @@ self.addEventListener('push', e => {
   const { title, body, url } = e.data.json();
   console.log('Push received');
   self.registration.showNotification(title, {
-    body: body,
-    data: url,
-    icon: 'http://image.ibb.co/frY0Fd/tmlogo.png'
+    body,
+    data: url
   });
 });
 

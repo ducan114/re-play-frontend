@@ -49,7 +49,10 @@ export default createGlobalStyle`
   --colors-warning: #ffce3c;
   --colors-warning-translucent: #ffce3c4f;
   --colors-blue: #1f66ff;
+<<<<<<< HEAD
   --colors-green: #1fff8d;
+=======
+>>>>>>> ca462ae (dashbroad static ui)
   --shadow-border: 1px 1px 4px 0 #e7eeef;
   --shadow-border-medium: 0 4px 12px 0 #00000026;
   --shadow-border-big: 0 6px 16px 0 #00000033;

@@ -97,6 +97,7 @@ export default function useFilmFetch() {
     FilmSubscription.findOne(slug)
       .then(data => setIsSubscribed(data.subscribed))
       .catch(console.error);
+
   }, [user]);
 
   return {

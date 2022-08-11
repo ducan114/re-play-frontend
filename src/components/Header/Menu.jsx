@@ -68,6 +68,11 @@ export default function Menu({ admin, onClose }) {
             <Link to='/admin'>Administration</Link>
           </MenuItem>
         )}
+        {admin && (
+          <MenuItem>
+            <Link to='/dashbroad'>Dashbroad</Link>
+          </MenuItem>
+        )}
         <MenuItem onClick={onSignOut}>Sign out</MenuItem>
       </ul>
     </StyledMenu>

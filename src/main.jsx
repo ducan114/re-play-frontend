@@ -11,6 +11,7 @@ import Film from './routes/film';
 import Episode from './routes/episode';
 import TopView from './routes/topview';
 import TopLike from './routes/toplike';
+import DashbroadRoute from './routes/dashbroad';
 
 render(
   <React.StrictMode>
@@ -21,6 +22,7 @@ render(
           <Route path='login' element={<Login />} />
           <Route path='profile' element={<Profile />} />
           <Route path='admin' element={<Admin />} />
+          <Route path='dashbroad' element={<DashbroadRoute />} />
           <Route path='films'>
             <Route path='topview' element={<TopView />} />
             <Route path='toplike' element={<TopLike />} />

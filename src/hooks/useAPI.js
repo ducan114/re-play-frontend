@@ -29,10 +29,12 @@ export default function useAPI() {
   };
 
   const getUserInfo = () => refreshTokenIfNeeded(User.getInfo);
+
   const signOut = async () => {
     await User.signOut();
     setAccessToken(null);
   };
+
   const createFilm = data => refreshTokenIfNeeded(Film.create, data);
   const updateFilm = (slug, data) =>
     refreshTokenIfNeeded(Film.update, slug, data);
@@ -66,6 +68,7 @@ export default function useAPI() {
   const updateGenre = (name, newName, newDescription) =>
     refreshTokenIfNeeded(Genre.update, name, newName, newDescription);
   const deleteGenre = name => refreshTokenIfNeeded(Genre.delete, name);
+
   const fetchFilmSubscription = slug =>
     refreshTokenIfNeeded(FilmSubscription.findOne, slug);
   const createFilmSubscription = slug =>
@@ -80,6 +83,7 @@ export default function useAPI() {
       getInfo: getUserInfo,
       refreshToken: User.refreshToken,
       signOut
+
     },
     Film: {
       findOne: Film.findOne,

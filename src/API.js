@@ -257,7 +257,6 @@ const subscribePushNotification = (accessToken, subscription) =>
     },
     body: JSON.stringify({ subscription })
   });
-
 export const Film = {
   findOne: fetchFilm,
   findMany: fetchFilms,

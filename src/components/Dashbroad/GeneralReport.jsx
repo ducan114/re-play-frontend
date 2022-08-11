@@ -53,7 +53,7 @@ const GeneralReport = () => {
                         <div className='top'>
                             <EyeOutlined className='icon-left icon-eye'/>
                             <div className={`top-indicator index-${data?.view?.volatility?.type}`}>
-                                <span>{`${data?.view?.volatility?.percent || 0.1}%`}</span>
+                                <span>{`${data?.view?.volatility?.percent.toFixed(0) || 0.1}%`}</span>
                                 {data?.view?.volatility?.type === 'down'
                                     ? <ArrowDownOutlined />
                                     : <ArrowUpOutlined />
@@ -74,7 +74,7 @@ const GeneralReport = () => {
                         <div className='top'>
                             <CommentOutlined className='icon-left icon-cmt'/>
                             <div className={`top-indicator index-${data?.comment?.volatility?.type}`}>
-                                <span>{`${data?.comment?.volatility?.percent || 0.1}%`}</span>
+                                <span>{`${data?.comment?.volatility?.percent.toFixed(0) || 0.1}%`}</span>
                                 {data?.comment?.volatility?.type === 'down'
                                     ? <ArrowDownOutlined />
                                     : <ArrowUpOutlined />
@@ -95,7 +95,7 @@ const GeneralReport = () => {
                         <div className='top'>
                             <LikeTwoTone className='icon-left icon-like'/>
                             <div className={`top-indicator index-${data?.like?.volatility?.type}`}>
-                                <span>{`${data?.like?.volatility?.percent || 0.1}%`}</span>
+                                <span>{`${data?.like?.volatility?.percent.toFixed(0) || 0.1}%`}</span>
                                 {data?.like?.volatility?.type === 'down'
                                     ? <ArrowDownOutlined />
                                     : <ArrowUpOutlined />
@@ -116,7 +116,7 @@ const GeneralReport = () => {
                         <div className='top'>
                             <DislikeTwoTone className='icon-left icon-dislike'/>
                             <div className={`top-indicator index-${data?.dislike?.volatility?.type}`}>
-                                <span>{`${data?.dislike?.volatility?.percent || 0.1}%`}</span>
+                                <span>{`${data?.dislike?.volatility?.percent.toFixed(0) || 0.1}%`}</span>
                                 {data?.dislike?.volatility?.type === 'down'
                                     ? <ArrowDownOutlined />
                                     : <ArrowUpOutlined />

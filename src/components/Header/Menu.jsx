@@ -3,6 +3,7 @@ import { useAPIContext } from '../../contexts/APIContext';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { StyledMenu, MenuItem } from './Header.styles';
+import { useNavigate } from 'react-router-dom';
 
 export default function Menu({ admin, onClose }) {
   const {
@@ -10,6 +11,7 @@ export default function Menu({ admin, onClose }) {
     API: { User },
   } = useAPIContext();
   const menuRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const listener = e => {
@@ -25,6 +27,7 @@ export default function Menu({ admin, onClose }) {
       await User.signOut();
       setUser(null);
       toast.success('Signed out!');
+      navigate('/');
     } catch (err) {
       toast.error('Sign out failed.\nPlease check your connections');
     }
@@ -67,9 +70,12 @@ export default function Menu({ admin, onClose }) {
             <Link to='/admin'>Administration</Link>
           </MenuItem>
         )}
-        <MenuItem>
-          <Link to='/dashbroad'>Dashbroad</Link>
-        </MenuItem>
+        {admin && (
+          <MenuItem>
+            <Link to='/dashbroad'>Dashbroad</Link>
+          </MenuItem>
+        )}
+        
         <MenuItem onClick={onSignOut}>Sign out</MenuItem>
       </ul>
     </StyledMenu>

@@ -3,6 +3,7 @@ import { Container } from '../styles/containers';
 import Dashbroad from '../components/Dashbroad';
 import { useAPIContext } from '../contexts/APIContext';
 import { useNavigate } from 'react-router-dom';
+import PermissionDenied from '../components/PermissionDenied/';
 
 const DashbroadRoute = () => {
   const { user, loadingUser } = useAPIContext();
